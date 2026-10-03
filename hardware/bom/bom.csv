@@ -1,0 +1,21 @@
+Reference,Part,Buy,Amazon link,Est USD
+DRV1-6,BIGTREETECH TMC2209 V1.3 drivers with heatsinks (5-pack) + 1 single,1 pack + 1,https://www.amazon.com/BIGTREETECH-DIRECT-TMC2209-Stepsticks-Motherboard/dp/B07ZQ3C1XW,40
+M1-M3,"STEPPERONLINE Nema 17 17HS19-2004S1, 59 Ncm 2 A, 3-pack with 1 m cables",1 pack,https://www.amazon.com/Stepper-Motor-59Ncm-4-wire-Printer/dp/B00Y2HJE22,30
+M4-M6,"STEPPERONLINE short-body Nema 17 (17HS08-1004S), 16 Ncm 1 A",3,https://www.amazon.com/STEPPERONLINE-Bipolar-Stepper-22-6oz-Extruder/dp/B00PNEQ79Q,33
+U6,"HiLetgo XL4015 5 A buck module, 3-pack",1 pack,https://www.amazon.com/HiLetgo-1-25-36V-Converter-Adjustable-Step-down/dp/B00LOG4XC0,10
+M7,"MG996R servo, 4-pack (Deegoo-FPV)",1 pack,https://www.amazon.com/MG996R-Copper-Digital-Helicopter-Control/dp/B0DK1V5ZSM,17
+ENC1-ENC6,"AS5600 magnetic encoder modules with magnets, 10-pack (check 5 V support)",1 pack,https://www.amazon.com/AS5600-Magnetic-Encoder-Induction-Measurement/dp/B0D3WMK5MT,15
+carrier,"ElectroCookie large prototype board, 3-pack",1 pack,https://www.amazon.com/Prototype-Solderable-Breadboard-Electronics-Gold-Plated/dp/B082KY5Y5Z,12
+carrier,"Glarks 2.54 mm female header kit, 120 pcs",1 kit,https://www.amazon.com/Glarks-Straight-Connector-Assortment-Prototype/dp/B076GZXW3Z,8
+F0-F2,"16 AWG inline ATO fuse holders with fuse assortment, 5-pack",1 kit,https://www.amazon.com/Inline-Holder-Blade-3-2Ft-Electric/dp/B0B4JTWJDT,12
+SW1,"E-stop, 22 mm latching red mushroom, 1 NC, twist release",1,https://www.amazon.com/COMOK-Emergency-Self-Locking-Push-Button-ZB2-BE102C/dp/B07MJPRMRL,9
+K1,"24 V 30 A automotive relay, normally open, with wired socket",1,https://www.amazon.com/Normally-Automotive-Relay-18AWG-Socket/dp/B0CQFG7WZV,8
+"C7,C20-C25","Electrolytic capacitor assortment (100 uF 35 V, 1000 uF)",1 kit,https://www.amazon.com/OQATNXUR-Electrolytic-Capacitor-Assortment-1000uf/dp/B0DDCB76H9,12
+"C1-C6,C8",BOJACK ceramic capacitor kit (includes 100 nF),1 kit,https://www.amazon.com/BOJACK-Ceramic-Capacitor-Assortment-Capacitors/dp/B07P8N8BW9,10
+"R1-R6,R13,R21-R26,R31-R32","ELEGOO 525 pc metal film resistor kit (1k x9, 10k x6)",1 kit,https://www.amazon.com/Elegoo-Values-Resistor-Assortment-Compliant/dp/B072BL2VX1,10
+fan,WINSINN 40 mm 5 V fan (2-pack),1 pack,https://www.amazon.com/WINSINN-Bearings-Brushless-Cooling-40mm10mm/dp/B08R9JJDYP,9
+USB,"Amazon Basics USB-A to USB-B cable, 6 ft",1,https://www.amazon.com/amazonbasics-usb-2-0-cable-male/dp/b00nh11kik,5
+wire,CBAZY 18 AWG silicone wire kit (power),1,https://www.amazon.com/CBAZY-Stranded-Flexible-Silicone-Electric/dp/B073RDBW7L,15
+wire,CBAZY 22 AWG silicone wire kit (signals),1,https://www.amazon.com/CBAZY-Flexible-Silicone-Stranded-Electric/dp/B073RF4YY4,13
+Not included,"Raspberry Pi 5 8GB + 27 W USB-C supply, Arduino Mega 2560, 24 V supply, printed parts and mechanical hardware",,,
+,"TOTAL (estimate, before tax/shipping)",,,268.0

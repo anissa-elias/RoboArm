@@ -1,0 +1,31 @@
+# KiCad local and backup files
+*.kicad_prl
+*-backups/
+fp-info-cache
+_autosave-*
+*.lck
+hardware/electronics/output/*.net
+hardware/electronics/output/*.rpt
+hardware/electronics/output/*.png
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# Firmware builds
+.pio/
+*.elf
+*.hex
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
