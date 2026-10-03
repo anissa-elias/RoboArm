@@ -1,0 +1,13 @@
+# docker compose -f software/docker/compose.yaml run --rm dev
+services:
+  dev:
+    build: .
+    image: roboarm-dev:jazzy
+    network_mode: host
+    volumes:
+      - ../..:/roboarm
+    # On the Raspberry Pi with the Mega plugged in, expose its serial port:
+    # devices:
+    #   - /dev/ttyACM0:/dev/ttyACM0
+    stdin_open: true
+    tty: true
