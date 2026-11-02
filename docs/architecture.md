@@ -14,11 +14,11 @@
               +-------------+    |    |  +-------------> gripper servo (6 V)
               v                  |    |
         +-----------+  UART x2   |    |  analog A0-A5
-        | 6x TMC2209|<-----------+    +<------------ 6x AS5600 joint encoders
+        | 5x TMC2209|<-----------+    +<------------ 5x AS5600 joint encoders
         +-----+-----+
               | 4 wires each
               v
-        6x NEMA 17 stepper motors
+        5x stepper motors
 ```
 
 ## Power

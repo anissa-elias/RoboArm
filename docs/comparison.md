@@ -4,7 +4,7 @@ Checked October 2026. Specifications are from each project's own documentation.
 
 | | RoboArm (planned) | Niryo Ned2 | Thor | PAROL6 | Faze4 |
 |---|---|---|---|---|---|
-| Joints | 6 + gripper | 6 + gripper | 6 + gripper | 6 + gripper | 6 + gripper |
+| Joints | 5 + gripper | 6 + gripper | 6 + gripper | 6 + gripper | 6 + gripper |
 | Onboard computer | Raspberry Pi 5, ROS 2 Jazzy | Raspberry Pi 4, ROS | None (PC) | None (PC) | None (PC) |
 | Motion controller | Arduino Mega 2560 | Built in | Arduino Mega + Thor control PCB | STM32 board, TMC5160 | Teensy 3.5 |
 | Joint position feedback | AS5600 absolute encoders | Magnetic encoders | None | Not listed | Limit switches |

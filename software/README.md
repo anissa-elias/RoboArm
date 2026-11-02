@@ -25,6 +25,20 @@ On the Pi with the Mega plugged in, uncomment the `devices:` block in `compose.y
 docker compose -f software/docker/compose.yaml run --rm dev bash software/tools/smoke_test.sh
 ```
 
+## Simulator
+
+`sim/roboarm.xml` is a MuJoCo model of the whole arm. The base and J1 use the real printable meshes; the arm above J1 uses simple shapes for now. Motor torques are limited to the values in `hardware/mechanical/joint_sizing.py`, and the J2 spring is not modeled.
+
+```bash
+cd software/sim
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python test_model.py     # checks holding and picking up a cube
+.venv/bin/python play_web.py       # open http://localhost:8765
+```
+
+Over SSH, forward the port from your own computer with `ssh -L 8765:localhost:8765 <user>@<machine>`. To host it on a VPN address instead, start it with `ROBOARM_HOST=<address> .venv/bin/python play_web.py`. There is no login, so anyone who can reach that address can control it. With a local display you can also run `python -m mujoco.viewer --mjcf=roboarm.xml`.
+
 ## Planned packages
 
 | Package | Purpose |
@@ -33,4 +47,3 @@ docker compose -f software/docker/compose.yaml run --rm dev bash software/tools/
 | `roboarm_hardware` | ros2_control hardware interface talking to the Mega over USB serial |
 | `roboarm_moveit_config` | MoveIt 2 motion planning |
 | `roboarm_bringup` | Launch files |
-| `roboarm_sim` | Simulation (MuJoCo or Gazebo) |

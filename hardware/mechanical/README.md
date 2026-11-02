@@ -1,15 +1,10 @@
 # Mechanical
 
-Not started. This folder will hold the 3D-printed body, CAD sources and print settings.
+RoboArm body the size of a Niryo Ned2: J1 base, J2 shoulder, J3 elbow, J4 wrist, J5 wrist twist, J6 gripper, with 491 mm reach and 300 g payload. Not yet CAD-frozen.
 
-## To decide
-
-- Body: adapt an existing open design or design a RoboArm body from scratch. If an existing design is adapted, follow its license and credit it.
-- Joint layout and gear ratios for each of the 6 joints.
-- Motor sizes per joint (the current BOM assumes 59 Ncm motors on joints 1-3 and short 16 Ncm motors on joints 4-6).
-- Mounts for the AS5600 encoder magnets on each joint OUTPUT shaft, so the measured angle is the true joint angle.
-- Cable routing through the joints.
-- Mount for the driver carrier board, Mega, Pi 5 and E-stop in the base.
+- [Mechanical design](../../docs/mechanical-design.md): joints, drivetrains, gripper and casing
+- [cad/base_j1.py](cad/base_j1.py): base and J1 model. Generates the printable files in [stl/](stl/) and checks part fit.
+- [joint_sizing.py](joint_sizing.py): torque, speed and belt-load calculations. Edit the masses as real parts are weighed and re-run.
 
 ## Planned layout
 

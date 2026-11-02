@@ -9,8 +9,8 @@
 ## Next
 
 ### Mechanical
-- [ ] Choose the body: adapt an existing open design or design a RoboArm body
-- [ ] Joint layout, gear ratios and motor sizes per joint
+- [x] Choose the body: RoboArm body at Ned2 size (see mechanical-design.md)
+- [x] Joint layout, gear ratios and motor sizes per joint (proposed, not yet tested)
 - [ ] Encoder magnet mounts on each joint output
 - [ ] Printed parts list, materials and print settings
 - [ ] Assembly guide
