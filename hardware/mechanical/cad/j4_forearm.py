@@ -34,7 +34,7 @@ BELT_H = 6.0
 B_ID, B_OD, B_W = 15.0, 24.0, 5.0
 FIT = 0.15
 
-# Stage 1: 20T on the motor to 60T, 160 mm belt. Stage 2: 16T to 80T, 300 mm belt.
+# Stage 1: 16T on the motor to 60T, 160 mm belt. Stage 2: 16T to 80T, 300 mm belt.
 PITCH = 2.0
 pd = lambda t: t * PITCH / math.pi
 
@@ -49,12 +49,12 @@ def centre_distance(t1, t2, length):
     return c
 
 
-C1 = centre_distance(20, 60, 160.0)
+C1 = centre_distance(16, 60, 160.0)
 C2 = centre_distance(16, 80, 300.0)
 X_C = X_W - C2                # compound pulley shaft
 Z_C = Z_E
 MOTOR_W, MOTOR_L = 42.3, 20.0 # 17HS08-1004S, CHECK
-HUMP_Z = 27.0
+HUMP_Z = 29.0
 Z_MOT = Z_E + HUMP_Z
 X_MOT = X_C - math.sqrt(C1 ** 2 - HUMP_Z ** 2)
 TENSION = 2.5
@@ -62,14 +62,14 @@ TENSION = 2.5
 
 def sec(x, hy, hz, yc=0.0, r=10.0):
     pts = [(yc + sy * (hy - r), sz * (hz - r)) for sy in (-1, 1) for sz in (-1, 1)]
-    return Manifold.batch_hull([Manifold.cylinder(0.01, r, r, 64).rotate((0, 90, 0)).translate((x, y, Z_E + z)) for y, z in pts])
+    return Manifold.batch_hull([Manifold.cylinder(0.5, r, r, 64).rotate((0, 90, 0)).translate((x - 0.25, y, Z_E + z)) for y, z in pts])
 
 
 def skin(off):
     r = 10.0 - off * 0.8
     hy, hz = HALF_Y - off, HALF_Z - off
     stem_hy = (STEM_Y[1] - STEM_Y[0]) / 2 - off
-    root = Manifold.batch_hull([sec(X_ROOT, stem_hy, hz, STEM_C, r), sec(X_ROOT + 42, hy, hz, 0, r)])
+    root = Manifold.batch_hull([sec(X_ROOT + 0.3, stem_hy, hz, STEM_C, r), sec(X_ROOT + 42, hy, hz, 0, r)])
     tube = Manifold.batch_hull([sec(X_ROOT + 42, hy, hz, 0, r), sec(X_W - 34, hy, hz, 0, r)])
     head = Manifold.batch_hull([sec(X_W - 34, hy, hz, 0, r), ycyl(-HEAD_HALF + off, HEAD_HALF - off, HEAD_R - off, X_W, Z_E)])
     hump = Manifold.batch_hull([box(X_MOT - 25 + off, X_MOT + 25 - off, -18 + off, 17 - off, Z_E + 12, Z_E + 16),
@@ -184,9 +184,12 @@ def wrist_link():
     neck = Manifold.batch_hull([ycyl(-SLOT_Y + 0.4, SLOT_Y - 0.4, 21, X_W, Z_E), box(X_W + 36, X_W + 38, -SLOT_Y + 0.4, SLOT_Y - 0.4, Z_E - 18, Z_E + 18)])
     axle = ycyl(-HEAD_HALF + 0.2, -SLOT_Y + 0.5, (B_ID - FIT) / 2, X_W, Z_E)
     body = hub + neck + axle
-    body -= box(X_W + 6, X_W + 39, -9.5, 9.5, Z_E - 13, Z_E + 13)                # wires pass through
+    body -= box(X_W + 6, X_W + 39, -9.5, 9.5, Z_E - 13.5, Z_E + 13.5)                # wires pass through
     body -= box(X_W - 22, X_W + 8, -9.5, 9.5, Z_E - 8, Z_E + 8)
     body -= ycyl(-HEAD_HALF - 1, -HEAD_HALF + 2.7, 3.1, X_W, Z_E)                # magnet
+    for y in (-6.0, 6.0):                                                        # M3 screws from the J5 housing
+        for z in (Z_E - 15.5, Z_E + 15.5):
+            body -= Manifold.cylinder(12, 1.25, 1.25, 32).rotate((0, 90, 0)).translate((X_W + 27, y, z))
     for i in range(3):
         t = math.radians(30 + 120 * i)
         body -= ycyl(SLOT_Y - 8, SLOT_Y + 1, 1.5, X_W + 14 * math.cos(t), Z_E + 14 * math.sin(t))
@@ -196,7 +199,7 @@ def wrist_link():
 def dummy_motor():
     can = box(X_MOT - MOTOR_W / 2, X_MOT + MOTOR_W / 2, RIB[0] - MOTOR_L, RIB[0], Z_MOT - MOTOR_W / 2, Z_MOT + MOTOR_W / 2)
     shaft = ycyl(RIB[1] + 0.1, Y_S1 + BELT_H, 2.5, X_MOT, Z_MOT)
-    pulley = ycyl(Y_S1, Y_S1 + BELT_H, pd(20) / 2, X_MOT, Z_MOT)
+    pulley = ycyl(Y_S1, Y_S1 + BELT_H, pd(16) / 2 + 0.6, X_MOT, Z_MOT)
     return can + shaft + pulley
 
 

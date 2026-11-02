@@ -13,26 +13,26 @@ USABLE = 0.6           # usable fraction of holding torque at 24 V, moving, micr
 SPRING_BALANCE = 0.6   # fraction of the arm's own J2 gravity load carried by the spring
 
 # Lengths (m): upper arm, forearm, wrist to flange.
-L2, L3, WRIST = 0.221, 0.215, 0.055
+L2, L3, WRIST = 0.221, 0.215, 0.0685
 GRIP_CG, TCP = 0.050, 0.110  # past the flange: gripper centre of mass, payload point (cad/gripper.py)
 
 PAYLOAD = 0.300
-M = dict(gripper=0.20, j5_motor=0.20, wrist=0.10, forearm=0.30, j4_motor=0.15,
+M = dict(gripper=0.20, j5_motor=0.13, wrist=0.10, forearm=0.30, j4_motor=0.15,
          elbow=0.30, upper=0.45, j3_motor=0.60)
 
 # motor: (holding N·m, rated A, run A)
 MOTORS = {
     '17HS19-1684S': (0.52, 1.68, 1.4),
     '17HS08-1004S': (0.16, 1.00, 1.0),
-    '11HS20-0674S': (0.12, 0.67, 0.67),
+    '11HS12-0674S': (0.06, 0.67, 0.67),
 }
 # joint: (motor, gearbox ratio, belt stage ratios, belt driven teeth, target deg/s)
 DRIVES = {
     'J1': ('17HS19-1684S', 5.18, [8.0], 160, 45),
     'J2': ('17HS19-1684S', 13.73, [5.0], 100, 30),
     'J3': ('17HS19-1684S', 5.18, [5.0], 80, 45),
-    'J4': ('17HS08-1004S', 1.0, [3.0, 5.0], 80, 90),
-    'J5': ('11HS20-0674S', 1.0, [3.0], 48, 90),
+    'J4': ('17HS08-1004S', 1.0, [3.75, 5.0], 80, 90),
+    'J5': ('11HS12-0674S', 1.0, [4.0], 64, 90),
 }
 
 

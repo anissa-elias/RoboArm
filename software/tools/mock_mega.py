@@ -17,7 +17,7 @@ import time
 import tty
 
 N = 5
-LIMIT_MIN = [-167, -35, -80, -110, -145]
+LIMIT_MIN = [-167, -35, -80, -50, -145]
 LIMIT_MAX = [167, 90, 50, 110, 145]
 
 

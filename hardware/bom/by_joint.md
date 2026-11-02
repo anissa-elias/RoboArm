@@ -61,7 +61,7 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 | 6802 bearing, 15 x 24 x 5 mm | 2 | $6.00 |
 | GT2 belt, 160 mm, 6 mm wide | 1 | $4.00 |
 | GT2 belt, 300 mm, 6 mm wide | 1 | $4.00 |
-| GT2 20-tooth pulley, 5 mm bore | 1 | $3.50 |
+| GT2 16-tooth pulley, 5 mm bore | 1 | $3.50 |
 | 625 bearings and M5 bolt (compound pulley) | 2 | $3.50 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |
@@ -71,9 +71,9 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 
 | Part | Qty | Price |
 |---|---|---|
-| 11HS20-0674S motor | 1 | $15.00 |
+| 11HS12-0674S motor | 1 | $15.00 |
 | 6803 bearing, 17 x 26 x 5 mm | 2 | $6.00 |
-| GT2 belt, 6 mm wide, length from CAD | 1 | $4.00 |
+| GT2 belt, 180 mm, 6 mm wide | 1 | $4.00 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |
 | GT2 16-tooth pulley, 5 mm bore | 1 | $3.00 |

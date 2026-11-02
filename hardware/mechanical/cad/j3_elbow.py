@@ -58,20 +58,20 @@ TENSION = 3.0
 
 def slab(z, x0, x1, half_y, r=12.0):
     pts = [(x0 + r, -half_y + r), (x0 + r, half_y - r), (x1 - r, -half_y + r), (x1 - r, half_y - r)]
-    return Manifold.batch_hull([cyl(0.01, r, z, x, y) for x, y in pts])
+    return Manifold.batch_hull([cyl(0.5, r, z, x, y) for x, y in pts])
 
 
 def shell(off):
     """Outer skin of the arm, offset inwards by off."""
     r = 12.0 - off
     hy = HALF_Y - off
-    return Manifold.batch_hull([slab(Z_ROOT_TOP, -20 + off, 20 - off, 26 - off, r), slab(Z_M + 22, -26 + off, 25 - off, hy, r)]) + \
-        Manifold.batch_hull([slab(Z_M + 22, -26 + off, 25 - off, hy, r), slab(Z_E - 40, -24 + off, 24 - off, hy, r)]) + \
+    return Manifold.batch_hull([slab(Z_ROOT_TOP, -20 + off, 25 - off, 26 - off, r), slab(Z_M + 22, -26 + off, 25 - off, hy, r)]) + \
+        Manifold.batch_hull([slab(Z_M + 22, -26 + off, 25 - off, hy, r), slab(Z_E - 40, -24 + off, 25 - off, hy, r)]) + \
         Manifold.batch_hull([ycyl(-hy, hy, 23 - off, X_M, Z_M), slab(Z_M + 30, -24 + off, 20 - off, hy, r), slab(Z_M - 26, -19 + off, 10, hy - 3, r)])
 
 
 def head(off=0.0):
-    return Manifold.batch_hull([ycyl(-HEAD_Y + off, HEAD_Y - off, 34 - off, 0, Z_E), slab(Z_E - 48, -24 + off, 24 - off, HALF_Y - off, 12 - off)])
+    return Manifold.batch_hull([ycyl(-HEAD_Y + off, HEAD_Y - off, 34 - off, 0, Z_E), slab(Z_E - 48, -24 + off, 25 - off, HALF_Y - off, 12 - off)])
 
 
 def upper_arm():
@@ -224,7 +224,6 @@ def main():
     for name, m in parts.items():
         lo, hi = m.bounding_box()[:3], m.bounding_box()[3:]
         tm = to_trimesh(m)
-        tm.merge_vertices()
         assert tm.is_watertight, name
         n = len(m.decompose())
         if n > 1:

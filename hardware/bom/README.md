@@ -66,7 +66,7 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | M2 | STEPPERONLINE 17HS19-1684S-PG14 NEMA 17, 13.73:1 planetary (J2) | 1 | 1 | $35.00 | rough |
 | M3 | STEPPERONLINE 17HS19-1684S-PG5 NEMA 17, 5.18:1 planetary (J3) | 1 | 1 | $32.00 | rough |
 | M4 | [STEPPERONLINE 17HS08-1004S short NEMA 17, 16 N·cm (J4)](https://www.amazon.com/STEPPERONLINE-Bipolar-Stepper-22-6oz-Extruder/dp/B00PNEQ79Q) | 1 | 1 | $11.00 | estimate |
-| M5 | STEPPERONLINE 11HS20-0674S NEMA 11, 12 N·cm (J5 wrist twist) | 1 | 1 | $15.00 | rough |
+| M5 | STEPPERONLINE 11HS12-0674S NEMA 11, 6 N·cm, 31.5 mm long (J5 wrist twist) | 1 | 1 | $15.00 | rough |
 | U1 | Raspberry Pi 5 8 GB | 1 | Owned | $95.00 | rough |
 | PS2 | Official Raspberry Pi 27 W USB-C supply | 1 | Owned | $12.00 | rough |
 | - | Raspberry Pi 5 Active Cooler | 1 | Owned | $10.00 | rough |
@@ -88,11 +88,11 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | J3 | GT2 closed belt, 380 mm long, 15 mm wide (380-2GT-15) | 1 | 1 | $10.00 | rough |
 | J4 | GT2 closed belt, 160 mm long, 6 mm wide | 1 | 1 | $4.00 | rough |
 | J4 | GT2 closed belt, 300 mm long, 6 mm wide | 1 | 1 | $4.00 | rough |
-| J5 | GT2 closed belt, 6 mm wide, length from CAD | 1 | 1 | $4.00 | rough |
+| J5 | GT2 closed belt, 180 mm long, 6 mm wide | 1 | 1 | $4.00 | rough |
 | J2 | GT2 20-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
 | J3 | GT2 16-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
 | J3 | GT2 idler for 15 mm belt | 1 | 1 | $2.00 | rough |
-| J4 | GT2 20-tooth pulley, 5 mm bore, for 6 mm belt | 1 | 1 | $3.50 | rough |
+| J4 | GT2 16-tooth pulley, 5 mm bore, for 6 mm belt | 1 | 1 | $3.50 | rough |
 | J4 | 625 bearing, 5 x 16 x 5 mm (compound pulley), with M5 bolt | 2 | 1 x 2-pack | $3.50 | rough |
 | J5 | GT2 16-tooth pulley, 5 mm bore, for 6 mm belt | 1 | 1 | $3.00 | rough |
 | J2 | Extension springs for counterbalance, assortment | 1 | 1 | $12.00 | rough |

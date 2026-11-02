@@ -8,13 +8,12 @@ import json
 from pathlib import Path
 
 import numpy as np
-from manifold3d import Manifold
 
 import base_j1 as b
-import gripper as g
 import j2_shoulder as j2
 import j3_elbow as j3
 import j4_forearm as j4
+import j5_twist as j5
 
 OUT = Path(__file__).resolve().parent.parent / 'viewer'
 PAGE = Path(__file__).with_name('viewer_template.html')
@@ -24,19 +23,8 @@ PAGE = Path(__file__).with_name('viewer_template.html')
 JOINTS = {'J1': '#1F6FEB', 'J2': '#0CA678', 'J3': '#E8590C', 'J4': '#7048E8', 'J5': '#D6336C', 'J6': '#F2B705'}
 
 
-def tool(m):
-    """Place a gripper part on the end of the arm. Tool Z becomes arm +X."""
-    return m.rotate((0, 90, 0)).rotate((90, 0, 0)).translate((270, 0, j3.Z_E))
-
-
-def placeholders():
-    return Manifold.cylinder(19, 21, 21, 64).rotate((0, 90, 0)).translate((251, 0, j3.Z_E))
-
-
 def main():
-    j5_ring = placeholders()
-    z_f = g.Z_GEAR + g.GEAR_T + 9
-    fingers = g.finger().translate((4.2 + 15, 0, z_f)) + g.finger().rotate((0, 0, 180)).translate((-4.2 - 15, 0, z_f))
+    grip = j5.gripper_parts(30.0)
     # name, mesh, colour, stage (0 base, 1 J1, 2 J2, 3 J3), kind
     n, dark = '#C9D2DB', '#30393F'     # neutral structure, motors
     parts = [
@@ -63,10 +51,13 @@ def main():
         ('Compound pulley', j4.compound_pulley(), JOINTS['J4'], 3, 'printed', 'J4'),
         ('Wrist pulley', j4.wrist_pulley(), JOINTS['J4'], 4, 'printed', 'J4'),
         ('Wrist link', j4.wrist_link(), JOINTS['J4'], 4, 'printed', 'J4'),
-        ('Wrist twist', j5_ring, JOINTS['J5'], 4, 'placeholder', 'J5'),
-        ('Gripper body', tool(g.body()), JOINTS['J6'], 4, 'printed', 'J6'),
-        ('Gripper racks', tool(g.rack(1).translate((15, 0, 0)) + g.rack(-1).translate((-15, 0, 0))), JOINTS['J6'], 4, 'printed', 'J6'),
-        ('Gripper fingers', tool(fingers), dark, 4, 'printed', 'J6'),
+        ('Housing', j5.housing(), JOINTS['J5'], 4, 'printed', 'J5'),
+        ('Motor', j5.dummy_motor(), dark, 4, 'buy', 'J5'),
+        ('Spindle', j5.spindle(), JOINTS['J5'], 5, 'printed', 'J5'),
+        ('Tool flange', j5.tool_flange(), JOINTS['J5'], 5, 'printed', 'J5'),
+        ('Gripper body', grip[0], JOINTS['J6'], 5, 'printed', 'J6'),
+        ('Gripper racks', grip[1], JOINTS['J6'], 5, 'printed', 'J6'),
+        ('Gripper fingers', grip[2], dark, 5, 'printed', 'J6'),
     ]
     data = []
     for name, m, colour, stage, kind, group in parts:
