@@ -6,8 +6,8 @@ Complete build list for the arm in [docs/mechanical-design.md](../../docs/mechan
 |---|---|
 | Phase 1: base, J1, gripper and electronics test | $325 |
 | Phase 2: the rest of the electronics and motors | $103 |
-| Phase 3: mechanical for the arm | $124 |
-| **Total, before tax and shipping** | **about $552** |
+| Phase 3: mechanical for the arm | $112 |
+| **Total, before tax and shipping** | **about $540** |
 
 Totals leave out parts already owned (marked Owned, about $321). Confirm the Raspberry Pi is a Pi 5 and that the 24 V supply can deliver 5 A.
 
@@ -46,7 +46,7 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | - | [18 AWG silicone wire kit (24 V, motors)](https://www.amazon.com/CBAZY-Stranded-Flexible-Silicone-Electric/dp/B073RDBW7L) | 1 | Owned | $15.00 | estimate |
 | - | [22 AWG silicone wire kit (signals)](https://www.amazon.com/CBAZY-Flexible-Silicone-Stranded-Electric/dp/B073RF4YY4) | 1 | Owned | $13.00 | estimate |
 | J1 | 6813-2RS thin bearing, 65x85x10 mm | 2 | 2 | $20.00 | rough |
-| J1 | GT2 closed belt, 400 mm long, 15 mm wide (400-2GT-15) | 1 | 1 | $10.00 | rough |
+| J1 | GT2 closed belt, 360 mm long, 15 mm wide (360-2GT-15) | 1 | 1 | $10.00 | rough |
 | J1 | GT2 20-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
 | - | M3/M4/M5 screw, nut and washer assortment | 1 | 1 | $30.00 | rough |
 | - | M3/M4 brass heat-set inserts | 1 | 1 | $12.00 | rough |
@@ -83,17 +83,17 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | J2 | 6806 thin bearing, 30x42x7 mm | 2 | 2 | $8.00 | rough |
 | J3 | 6804 thin bearing, 20x32x7 mm | 2 | 2 | $8.00 | rough |
 | J4 | 6802 bearing, 15x24x5 mm | 2 | 2 | $6.00 | rough |
-| J2-J3 | GT2 closed belts, 15 mm wide, lengths from CAD | 2 | 2 | $20.00 | rough |
+| J2 | GT2 closed belt, 280 mm long, 15 mm wide (280-2GT-15) | 1 | 1 | $10.00 | rough |
+| J3 | GT2 closed belt, 380 mm long, 15 mm wide (380-2GT-15) | 1 | 1 | $10.00 | rough |
 | J4-J5 | GT2 closed belts, 6 mm wide, lengths from CAD | 3 | 3 | $12.00 | rough |
 | J2 | GT2 20-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
-| J3 | GT2 20-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
+| J3 | GT2 16-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
 | J3 | GT2 idler for 15 mm belt | 1 | 1 | $2.00 | rough |
 | J4 | GT2 small pulleys, 5 mm bore, 20T and 16T, for 6 mm belt | 2 | 2 | $7.00 | rough |
 | J4 | GT2 idler for 6 mm belt | 1 | 1 | $2.00 | rough |
 | J5 | GT2 16-tooth pulley, 5 mm bore, for 6 mm belt | 1 | 1 | $3.00 | rough |
 | J2 | Extension springs for counterbalance, assortment | 1 | 1 | $12.00 | rough |
-| Upper arm | 2020 aluminium extrusion, 180 mm | 2 | 1 x 2-pack | $12.00 | rough |
 | Forearm | 10 mm aluminium rod, 200 mm | 2 | 1 x 2-pack | $10.00 | rough |
-| | **Subtotal to buy** | | | **$124.00** | |
+| | **Subtotal to buy** | | | **$112.00** | |
 
 Tools are not included: soldering iron, multimeter, 3D printer with a bed of at least 220 mm, hex keys.

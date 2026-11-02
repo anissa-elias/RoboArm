@@ -10,8 +10,8 @@ Parts still to buy, split by where they are used. Totals match [bom.csv](bom.csv
 | J4 wrist | $43.60 |
 | J5 wrist twist | $37.60 |
 | J6 gripper | $48.99 |
-| Shared | $190.48 |
-| **Total** | **$552.47** |
+| Shared | $178.48 |
+| **Total** | **$540.47** |
 
 Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pack. The pack is bought once. Each also lists one AS5600 encoder at $3.00, its share of the $15 10-pack, which leaves 5 spares.
 
@@ -21,7 +21,7 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 |---|---|---|
 | 17HS19-1684S-PG5 motor | 1 | $32.00 |
 | 6813-2RS bearing, 65 x 85 x 10 mm | 2 | $20.00 |
-| GT2 belt, 400 mm, 15 mm wide | 1 | $10.00 |
+| GT2 belt, 360 mm, 15 mm wide | 1 | $10.00 |
 | GT2 20-tooth pulley, 8 mm bore, 15 mm belt | 1 | $8.00 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |
@@ -33,7 +33,7 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 |---|---|---|
 | 17HS19-1684S-PG14 motor | 1 | $35.00 |
 | 6806 bearing, 30 x 42 x 7 mm | 2 | $8.00 |
-| GT2 belt, 15 mm wide, length from CAD | 1 | $10.00 |
+| GT2 belt, 280 mm, 15 mm wide | 1 | $10.00 |
 | Extension springs | 1 | $12.00 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |
@@ -46,10 +46,10 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 |---|---|---|
 | 17HS19-1684S-PG5 motor | 1 | $32.00 |
 | 6804 bearing, 20 x 32 x 7 mm | 2 | $8.00 |
-| GT2 belt, 15 mm wide, length from CAD | 1 | $10.00 |
+| GT2 belt, 380 mm, 15 mm wide | 1 | $10.00 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |
-| GT2 20-tooth pulley, 8 mm bore, 15 mm belt | 1 | $8.00 |
+| GT2 16-tooth pulley, 8 mm bore, 15 mm belt | 1 | $8.00 |
 | GT2 idler for 15 mm belt | 1 | $2.00 |
 | **Total** | | **$69.60** |
 
@@ -118,9 +118,8 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 
 | Part | Price |
 |---|---|
-| 2020 extrusion, 180 mm x 2 (upper arm) | $12.00 |
 | 10 mm aluminium rod x 2 (forearm) | $10.00 |
 | Screws, nuts and washers | $30.00 |
 | Heat-set inserts | $12.00 |
 | Table clamps or bolts | $12.00 |
-| **Total** | **$76.00** |
+| **Total** | **$64.00** |
