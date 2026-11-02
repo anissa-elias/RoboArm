@@ -1,0 +1,136 @@
+<mujoco model="roboarm">
+  <!-- Base and J1 use the real printable meshes. The arm above J1 uses simple shapes until it is modeled.
+       Lengths, masses, limits and motor torque limits match docs/mechanical-design.md.
+       The J2 spring is not modeled, so J2 carries the full load. -->
+  <compiler angle="degree" meshdir="../../hardware/mechanical/stl" autolimits="true"/>
+  <option timestep="0.002" integrator="implicitfast" cone="elliptic" impratio="10"/>
+
+  <visual>
+    <global offwidth="1280" offheight="800" azimuth="135" elevation="-22"/>
+    <headlight diffuse="0.7 0.7 0.7" ambient="0.35 0.35 0.35" specular="0.1 0.1 0.1"/>
+    <rgba haze="0.95 0.96 0.97 1"/>
+  </visual>
+
+  <asset>
+    <texture name="sky" type="skybox" builtin="flat" rgb1="0.95 0.96 0.97" rgb2="0.95 0.96 0.97" width="32" height="32"/>
+    <texture name="grid" type="2d" builtin="checker" rgb1="0.86 0.89 0.92" rgb2="0.92 0.94 0.96" width="256" height="256"/>
+    <material name="floor" texture="grid" texrepeat="12 12" reflectance="0.05"/>
+    <material name="white" rgba="0.95 0.96 0.97 1"/>
+    <material name="shell" rgba="0.79 0.82 0.86 1"/>
+    <material name="deck" rgba="0.56 0.64 0.71 1"/>
+    <material name="blue" rgba="0.12 0.44 0.92 1"/>
+    <material name="dark" rgba="0.19 0.22 0.25 1"/>
+    <material name="orange" rgba="0.85 0.35 0.04 1"/>
+    <mesh name="shell" file="base_shell.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="deck" file="base_deck.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="plate" file="j1_motor_plate.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="cover" file="j1_belt_cover.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="cap" file="j1_bearing_cap.stl" scale="0.001 0.001 0.001"/>
+    <mesh name="rotor" file="j1_rotor.stl" scale="0.001 0.001 0.001"/>
+  </asset>
+
+  <default>
+    <default class="visual">
+      <geom contype="0" conaffinity="0"/>
+    </default>
+    <default class="link">
+      <geom contype="1" conaffinity="1" condim="3" friction="0.6"/>
+    </default>
+    <default class="pad">
+      <geom contype="1" conaffinity="1" condim="4" friction="1.5 0.05 0.002" solimp="0.95 0.99 0.001" solref="0.004 1" material="dark"/>
+    </default>
+  </default>
+
+  <worldbody>
+    <light pos="0.4 -0.6 1.4" dir="-0.2 0.3 -1" diffuse="0.6 0.6 0.6"/>
+    <geom name="table" type="plane" size="1 1 0.05" material="floor" friction="0.8"/>
+
+    <body name="base">
+      <geom class="visual" type="mesh" mesh="shell" material="shell"/>
+      <geom class="visual" type="mesh" mesh="deck" material="deck"/>
+      <geom class="visual" type="mesh" mesh="plate" material="orange"/>
+      <geom class="visual" type="mesh" mesh="cover" material="white"/>
+      <geom class="visual" type="mesh" mesh="cap" material="dark"/>
+      <geom name="base_box" class="link" type="box" pos="0 0 0.046" size="0.1 0.1 0.046" rgba="0 0 0 0"/>
+    </body>
+
+    <body name="j1_turntable">
+      <joint name="j1" axis="0 0 1" range="-167.5 167.5" armature="0.012" damping="0.4" frictionloss="0.15"/>
+      <geom class="visual" type="mesh" mesh="rotor" material="blue" mass="0.25"/>
+      <geom class="visual" type="box" pos="0 0 0.16" size="0.04 0.045 0.025" material="deck" mass="0.3"/>
+      <geom class="visual" type="box" pos="-0.03 -0.06 0.16" size="0.021 0.021 0.024" material="dark" mass="0.6"/>
+
+      <body name="j2_upper_arm" pos="0 0 0.166">
+        <joint name="j2" axis="0 1 0" range="-35 90" armature="0.032" damping="0.6" frictionloss="0.1"/>
+        <geom class="visual" type="cylinder" fromto="0 -0.05 0 0 0.05 0" size="0.03" material="blue" mass="0.02"/>
+        <geom name="upper" class="link" type="capsule" fromto="0 0 0.015 0 0 0.206" size="0.034" material="white" mass="0.45"/>
+        <geom class="visual" type="box" pos="0.03 0 0.05" size="0.021 0.021 0.04" material="dark" mass="0.6"/>
+
+        <body name="j3_forearm" pos="0 0 0.221">
+          <joint name="j3" axis="0 1 0" range="-80 80" armature="0.0046" damping="0.2" frictionloss="0.05"/>
+          <geom class="visual" type="cylinder" fromto="0 -0.042 0 0 0.042 0" size="0.03" material="blue" mass="0.3"/>
+          <geom name="forearm" class="link" type="capsule" fromto="0.02 0 0 0.19 0 0" size="0.026" material="white" mass="0.3"/>
+          <geom class="visual" type="box" pos="0.04 0 0.034" size="0.021 0.021 0.012" material="dark" mass="0.15"/>
+
+          <body name="j4_wrist" pos="0.215 0 0">
+            <joint name="j4" axis="0 1 0" range="-110 110" armature="0.0015" damping="0.04" frictionloss="0.02"/>
+            <geom class="visual" type="cylinder" fromto="0 -0.03 0 0 0.03 0" size="0.022" material="blue" mass="0.02"/>
+            <geom name="wrist" class="link" type="capsule" fromto="0.005 0 0 0.03 0 0" size="0.02" material="white" mass="0.1"/>
+            <geom class="visual" type="box" pos="0.03 0 0.022" size="0.022 0.014 0.014" material="dark" mass="0.2"/>
+
+            <body name="j5_tool" pos="0.04 0 0">
+              <joint name="j5" axis="1 0 0" range="-145 145" armature="0.0001" damping="0.004" frictionloss="0.002"/>
+              <geom class="visual" type="cylinder" fromto="0 0 0 0.015 0 0" size="0.022" material="blue" mass="0.02"/>
+              <geom name="palm" class="link" type="box" pos="0.03 0 0" size="0.015 0.05 0.02" material="deck" mass="0.14"/>
+              <site name="tool" pos="0.1 0 0" size="0.004" rgba="1 0.3 0 1"/>
+
+              <body name="j6_finger_a" pos="0.045 0 0">
+                <joint name="j6_a" type="slide" axis="0 1 0" range="0 0.025" damping="2" armature="0.02"/>
+                <geom name="finger_a" class="pad" type="box" pos="0.03 0.004 0" size="0.03 0.004 0.012" mass="0.02"/>
+              </body>
+              <body name="j6_finger_b" pos="0.045 0 0">
+                <joint name="j6_b" type="slide" axis="0 -1 0" range="0 0.025" damping="2" armature="0.02"/>
+                <geom name="finger_b" class="pad" type="box" pos="0.03 -0.004 0" size="0.03 0.004 0.012" mass="0.02"/>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <body name="red_cube" pos="0.3 0 0.0201">
+      <freejoint/>
+      <geom type="box" size="0.02 0.02 0.02" mass="0.1" rgba="0.85 0.2 0.1 1" condim="4" friction="1.2 0.05 0.002"/>
+    </body>
+    <body name="blue_cube" pos="0.25 0.2 0.0201">
+      <freejoint/>
+      <geom type="box" size="0.02 0.02 0.02" mass="0.1" rgba="0.1 0.35 0.85 1" condim="4" friction="1.2 0.05 0.002"/>
+    </body>
+  </worldbody>
+
+  <equality>
+    <joint joint1="j6_a" joint2="j6_b" polycoef="0 1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+
+  <contact>
+    <exclude body1="j1_turntable" body2="j2_upper_arm"/>
+    <exclude body1="j2_upper_arm" body2="j3_forearm"/>
+    <exclude body1="j3_forearm" body2="j4_wrist"/>
+    <exclude body1="j4_wrist" body2="j5_tool"/>
+    <exclude body1="j5_tool" body2="j6_finger_a"/>
+    <exclude body1="j5_tool" body2="j6_finger_b"/>
+    <exclude body1="j4_wrist" body2="j6_finger_a"/>
+    <exclude body1="j4_wrist" body2="j6_finger_b"/>
+  </contact>
+
+  <!-- forcerange is the motor torque available at each joint, from joint_sizing.py -->
+  <actuator>
+    <position name="J1 base" joint="j1" kp="300" kv="30" inheritrange="1" forcerange="-9.2 9.2"/>
+    <position name="J2 shoulder" joint="j2" kp="800" kv="50" inheritrange="1" forcerange="-15.2 15.2"/>
+    <position name="J3 elbow" joint="j3" kp="400" kv="25" inheritrange="1" forcerange="-5.7 5.7"/>
+    <position name="J4 wrist" joint="j4" kp="80" kv="4" inheritrange="1" forcerange="-1.1 1.1"/>
+    <position name="J5 twist" joint="j5" kp="10" kv="0.25" inheritrange="1" forcerange="-0.18 0.18"/>
+    <position name="J6 gripper" joint="j6_a" kp="10000" kv="150" inheritrange="1" forcerange="-25 25"/>
+  </actuator>
+
+</mujoco>

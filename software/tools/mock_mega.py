@@ -16,9 +16,9 @@ import select
 import time
 import tty
 
-N = 6
-LIMIT_MIN = [-170, -90, -135, -170, -110, -180]
-LIMIT_MAX = [170, 90, 135, 170, 110, 180]
+N = 5
+LIMIT_MIN = [-167, -35, -80, -110, -145]
+LIMIT_MAX = [167, 90, 80, 110, 145]
 
 
 class Arm:
@@ -76,7 +76,7 @@ class Arm:
             if c == "M":
                 a = [float(x) for x in args[:N]]
                 if len(a) < N:
-                    return "ERR need 6 angles"
+                    return "ERR need 5 angles"
                 if not self.enabled:
                     return "ERR disabled, send E 1"
                 self.target = [clamp(j, a[j]) for j in range(N)]
@@ -84,7 +84,7 @@ class Arm:
             if c == "J":
                 j = int(args[0]) - 1
                 if not 0 <= j < N:
-                    return "ERR joint 1-6"
+                    return "ERR joint 1-5"
                 if not self.enabled:
                     return "ERR disabled, send E 1"
                 self.target[j] = clamp(j, float(args[1]))

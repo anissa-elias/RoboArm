@@ -27,7 +27,7 @@ Or use the dev image, which has the toolchain: see [software/README.md](../softw
 |---|---|
 | `P` | Ping (keeps the 1 s link watchdog alive) |
 | `E 1` / `E 0` | Enable / disable all drivers |
-| `M a1 ... a6` | Move all joints to angles (degrees) |
+| `M a1 ... a5` | Move all joints to angles (degrees) |
 | `J n a` | Move joint n to angle a |
 | `X` | Stop smoothly |
 | `V dps` / `A dps2` | Max joint speed / acceleration |
@@ -39,7 +39,7 @@ Or use the dev image, which has the toolchain: see [software/README.md](../softw
 | `L n thr` | StallGuard threshold for joint n (0 = off) |
 | `C` | Clear faults |
 
-Status line: `S <faults> <enabled> <moving> | 6 commanded angles | 6 encoder angles | 6 loads | 6 driver flags`.
+Status line: `S <faults> <enabled> <moving> | 5 commanded angles | 5 encoder angles | 6 loads | 6 driver flags`.
 Fault bits: 1 link lost, 2 collision, 4 following error (> 5 deg between commanded and encoder), 8 no motor power (E-stop or 24 V off), 16 driver fault (open wire).
 
 ## Known limits (from the design review)

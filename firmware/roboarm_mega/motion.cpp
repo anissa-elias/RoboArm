@@ -43,8 +43,8 @@ void begin() {
     pos_steps[j] = 0; vel_q16[j] = 0; acc_q16[j] = 0; target_steps[j] = 0; vel_sps[j] = 0;
     pinMode(PIN_DIR[j], OUTPUT);
   }
-  DDRA |= 0x3F;   // STEP pins D22-D27
-  PORTA &= ~0x3F;
+  DDRA |= 0x1F;   // STEP pins D22-D26
+  PORTA &= ~0x1F;
   syncAxes();
   // Timer2 (Timers 1/3/4/5 belong to the Servo library on the Mega), CTC mode, prescaler 8:
   // 16 MHz / 8 / (OCR2A + 1) = STEP_ISR_HZ
@@ -57,7 +57,7 @@ void begin() {
 }
 
 ISR(TIMER2_COMPA_vect) {
-  PORTA &= ~0x3F;                 // end previous step pulses (>= 50 us wide)
+  PORTA &= ~0x1F;                 // end previous step pulses (>= 50 us wide)
   uint8_t out = 0;
   for (uint8_t j = 0; j < NUM_JOINTS; j++) {
     int32_t v = vel_q16[j];

@@ -13,12 +13,12 @@
         STEP/DIR/EN (x6)    |    |    |  |  PWM D9
               +-------------+    |    |  +-------------> gripper servo (6 V)
               v                  |    |
-        +-----------+  UART x2   |    |  analog A0-A5
-        | 6x TMC2209|<-----------+    +<------------ 6x AS5600 joint encoders
+        +-----------+  UART x2   |    |  analog A0-A4
+        | 5x TMC2209|<-----------+    +<------------ 5x AS5600 joint encoders
         +-----+-----+
               | 4 wires each
               v
-        6x NEMA 17 stepper motors
+        5x stepper motors
 ```
 
 ## Power
@@ -36,14 +36,15 @@ All grounds are common. The 24 V bus never touches the Pi or the Mega.
 
 | Function | Pins |
 |---|---|
-| STEP joint 1-6 | D22-D27 |
-| DIR joint 1-6 | D30-D35 |
-| EN joint 1-6 (LOW = driver on) | D36-D41, 10k pull-up holds drivers off during boot |
-| Encoder angle joint 1-6 | A0-A5 (1k + 100 nF filter at the Mega) |
+| STEP joint 1-5 | D22-D26 |
+| DIR joint 1-5 | D30-D34 |
+| EN joint 1-5 (LOW = driver on) | D36-D40, 10k pull-up holds drivers off during boot |
+| Encoder angle joint 1-5 | A0-A4 (1k + 100 nF filter at the Mega) |
 | TMC2209 UART bus A (joints 1-3) | Serial2: TX2 D16 (through 1k), RX2 D17 |
-| TMC2209 UART bus B (joints 4-6) | Serial3: TX3 D14 (through 1k), RX3 D15 |
+| TMC2209 UART bus B (joints 4-5) | Serial3: TX3 D14 (through 1k), RX3 D15 |
 | Gripper servo PWM | D9 (through 1k) |
-| Spare | D0-D8, D10-D13, D18-D21, D28-D29, D42-D53, A6-A15 |
+| Tool I2C (J6 plug) | SDA D20, SCL D21 |
+| Spare | D0-D8, D10-D13, D18-D19, D27-D29, D35, D41-D53, A5-A15 |
 
 ## Design decisions
 
