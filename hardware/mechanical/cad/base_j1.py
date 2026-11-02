@@ -81,6 +81,9 @@ MAG_D, MAG_H = 6.2, 2.5
 PAD = 24.0
 Z_PAD_TOP = Z_PLATE - 4.2
 
+PLATE_X, PLATE_Y, PLATE_T = 250.0, 210.0, 8.0   # mounting plate, clamp ears on the +X and -X ends
+TABLE_BOLTS = ((-85, 0), (85, 0), (0, 85), (0, -85))
+
 STOP_R, STOP_ANGLE = 57.0, 225.0  # deck block opposite the motor
 
 # Motor plate, long side along the belt. It slides +/- TENSION to set belt tension.
@@ -137,7 +140,7 @@ def base_shell():
 
     cuts = [cyl(16, 2.1, DECK_BOT - 16, x, y) for x, y in SCREW_XY]                   # M4 inserts
     cuts += [cyl(9, 1.2, FLOOR + 1, x, y) for x, y in PI_HOLES + MEGA_HOLES + CARRIER_HOLES]
-    cuts += [cyl(FLOOR + 2, 3.3, -1, x, y) for x, y in ((-85, 0), (85, 0), (0, 85), (0, -85))]  # M6 table bolts
+    cuts += [cyl(FLOOR + 2, 3.3, -1, x, y) for x, y in TABLE_BOLTS]  # M6 bolts into the mounting plate
     cuts.append(box(-BASE / 2 - 1, -BASE / 2 + WALL + 6, 14, 68, 12, 34))             # Pi ports
     cuts.append(box(-BASE / 2 - 1, -BASE / 2 + WALL + 6, -62, -18, 12, 30))           # Mega USB
     for y in (-8, 8):                                                                 # 24 V and E-stop cables
@@ -151,6 +154,25 @@ def base_shell():
         y = -78 + i * 11
         cuts.append(box(BASE / 2 - WALL - 9, BASE / 2 + 1, y, y + 5, 20, 72))
     return body - merge(cuts)
+
+
+def mount_plate():
+    """Flat plate under the base. The base bolts to it, and it is what gets clamped to the table.
+
+    Fits a 256 mm bed. M6 bolts drop through the base floor into nuts in the underside.
+    Sits below z = 0, so the table is at z = -PLATE_T.
+    """
+    half_x, half_y = PLATE_X / 2 - 12, PLATE_Y / 2 - 12
+    plate = Manifold.batch_hull([cyl(PLATE_T, 12, -PLATE_T, sx * half_x, sy * half_y) for sx in (-1, 1) for sy in (-1, 1)])
+    lip = tapered(BASE + 6.6, BASE + 6.6, BASE_R + 3.3, 2.0) - tapered(BASE + 0.6, BASE + 0.6, BASE_R + 0.3, 3.0, -0.5)
+    body = plate + lip
+    for x, y in TABLE_BOLTS:
+        body -= cyl(PLATE_T + 2, 3.3, -PLATE_T - 1, x, y)
+        body -= Manifold.cylinder(5, 6.0, 6.0, 6).translate((x, y, -PLATE_T - 0.01))   # M6 nut pocket
+    for sx in (-1, 1):                                                                 # bolt-down slots in the clamp ears
+        for sy in (-1, 1):
+            body -= Manifold.batch_hull([cyl(PLATE_T + 2, 3.4, -PLATE_T - 1, sx * (half_x - 3), sy * (half_y - 16 + e)) for e in (-8, 8)])
+    return body
 
 
 def deck():
@@ -279,6 +301,7 @@ def dummy_bearings():
 
 
 PRINTED = {
+    'base_mount_plate': mount_plate,
     'base_shell': base_shell,
     'base_deck': deck,
     'j1_motor_plate': motor_plate,
@@ -306,6 +329,7 @@ def checks(parts, motor, bearings):
         ('motor', 'rotor', motor, rot),
         ('motor', 'belt cover', motor, parts['j1_belt_cover']),
         ('deck', 'shell', parts['base_deck'], parts['base_shell']),
+        ('plate', 'shell', parts['base_mount_plate'], parts['base_shell']),
         ('motor', 'deck', motor, parts['base_deck']),
         ('plate', 'deck', parts['j1_motor_plate'], parts['base_deck']),
         ('plate', 'belt cover', parts['j1_motor_plate'], parts['j1_belt_cover']),

@@ -19,6 +19,10 @@ OUT = Path(__file__).resolve().parent.parent / 'viewer'
 PAGE = Path(__file__).with_name('viewer_template.html')
 
 
+# One colour per joint, used everywhere the arm is drawn.
+JOINTS = {'J1': '#1F6FEB', 'J2': '#0CA678', 'J3': '#E8590C', 'J4': '#7048E8', 'J5': '#D6336C', 'J6': '#F2B705'}
+
+
 def tool(m):
     """Place a gripper part on the end of the arm. Tool Z becomes arm +X."""
     return m.rotate((0, 90, 0)).rotate((90, 0, 0)).translate((270, 0, j3.Z_E))
@@ -26,47 +30,51 @@ def tool(m):
 
 def placeholders():
     forearm = Manifold.cylinder(155, 25, 22, 64).rotate((0, 90, 0)).translate((60, -11, j3.Z_E))
-    wrist = Manifold.cylinder(55, 22, 22, 64).rotate((0, 90, 0)).translate((215, 0, j3.Z_E))
-    return forearm, wrist
+    j4_ring = Manifold.cylinder(60, 22, 22, 64).rotate((90, 0, 0)).translate((215, 30, j3.Z_E))
+    j5_ring = Manifold.cylinder(24, 22, 22, 64).rotate((0, 90, 0)).translate((246, 0, j3.Z_E))
+    return forearm, j4_ring, j5_ring
 
 
 def main():
-    forearm, wrist = placeholders()
+    forearm, j4_ring, j5_ring = placeholders()
     z_f = g.Z_GEAR + g.GEAR_T + 9
     fingers = g.finger().translate((4.2 + 15, 0, z_f)) + g.finger().rotate((0, 0, 180)).translate((-4.2 - 15, 0, z_f))
     # name, mesh, colour, stage (0 base, 1 J1, 2 J2, 3 J3), kind
+    n, dark = '#C9D2DB', '#30393F'     # neutral structure, motors
     parts = [
-        ('Base shell', b.base_shell(), '#C9D2DB', 0, 'printed'),
-        ('Deck and hub', b.deck(), '#8FA3B5', 0, 'printed'),
-        ('Belt cover', b.belt_cover(), '#EEF2F6', 0, 'printed'),
-        ('J1 motor', b.dummy_motor(), '#30393F', 0, 'buy'),
-        ('J1 motor plate', b.motor_plate(), '#D9580B', 0, 'printed'),
-        ('Bearing cap', b.bearing_cap(), '#30393F', 0, 'printed'),
-        ('J1 turntable', b.rotor(), '#1F6FEB', 1, 'printed'),
-        ('J2 housing', j2.housing(), '#8FA3B5', 1, 'printed'),
-        ('J2 motor', j2.dummy_motor(), '#30393F', 1, 'buy'),
-        ('J2 arm root', j2.arm_root(), '#EEF2F6', 2, 'printed'),
-        ('J2 pulley', j2.big_pulley(), '#D9580B', 2, 'printed'),
-        ('Upper arm', j3.upper_arm(), '#EEF2F6', 2, 'printed'),
-        ('Tunnel lid', j3.lid(), '#B9C6D2', 2, 'printed'),
-        ('J3 motor', j3.dummy_j3_motor(), '#30393F', 2, 'buy'),
-        ('Elbow stem', j3.elbow_stem(), '#1F6FEB', 3, 'printed'),
-        ('Elbow pulley', j3.elbow_pulley(), '#D9580B', 3, 'printed'),
-        ('Forearm', forearm, '#DDE4EA', 3, 'placeholder'),
-        ('Wrist', wrist, '#C9D2DB', 3, 'placeholder'),
-        ('Gripper body', tool(g.body()), '#8FA3B5', 3, 'printed'),
-        ('Gripper racks', tool(g.rack(1).translate((15, 0, 0)) + g.rack(-1).translate((-15, 0, 0))), '#D9580B', 3, 'printed'),
-        ('Gripper fingers', tool(fingers), '#30393F', 3, 'printed'),
+        ('Mounting plate', b.mount_plate(), '#7D8A96', 0, 'printed', 'Base'),
+        ('Base shell', b.base_shell(), n, 0, 'printed', 'Base'),
+        ('Deck', b.deck(), '#9AA8B5', 0, 'printed', 'Base'),
+        ('Belt cover', b.belt_cover(), JOINTS['J1'], 0, 'printed', 'J1'),
+        ('Motor', b.dummy_motor(), dark, 0, 'buy', 'J1'),
+        ('Motor plate', b.motor_plate(), JOINTS['J1'], 0, 'printed', 'J1'),
+        ('Bearing cap', b.bearing_cap(), JOINTS['J1'], 0, 'printed', 'J1'),
+        ('Turntable', b.rotor(), JOINTS['J1'], 1, 'printed', 'J1'),
+        ('Housing', j2.housing(), JOINTS['J2'], 1, 'printed', 'J2'),
+        ('Motor', j2.dummy_motor(), dark, 1, 'buy', 'J2'),
+        ('Arm root', j2.arm_root(), JOINTS['J2'], 2, 'printed', 'J2'),
+        ('Pulley', j2.big_pulley(), JOINTS['J2'], 2, 'printed', 'J2'),
+        ('Upper arm', j3.upper_arm(), '#EEF2F6', 2, 'printed', 'Arm'),
+        ('Tunnel lid', j3.lid(), '#DDE4EA', 2, 'printed', 'Arm'),
+        ('Motor', j3.dummy_j3_motor(), dark, 2, 'buy', 'J3'),
+        ('Elbow stem', j3.elbow_stem(), JOINTS['J3'], 3, 'printed', 'J3'),
+        ('Elbow pulley', j3.elbow_pulley(), JOINTS['J3'], 3, 'printed', 'J3'),
+        ('Forearm', forearm, '#EEF2F6', 3, 'placeholder', 'Arm'),
+        ('Wrist hinge', j4_ring, JOINTS['J4'], 3, 'placeholder', 'J4'),
+        ('Wrist twist', j5_ring, JOINTS['J5'], 3, 'placeholder', 'J5'),
+        ('Gripper body', tool(g.body()), JOINTS['J6'], 3, 'printed', 'J6'),
+        ('Gripper racks', tool(g.rack(1).translate((15, 0, 0)) + g.rack(-1).translate((-15, 0, 0))), JOINTS['J6'], 3, 'printed', 'J6'),
+        ('Gripper fingers', tool(fingers), dark, 3, 'printed', 'J6'),
     ]
     data = []
-    for name, m, colour, stage, kind in parts:
+    for name, m, colour, stage, kind, group in parts:
         mesh = m.to_mesh()
         v = np.asarray(mesh.vert_properties)[:, :3].astype('f4')
         f = np.asarray(mesh.tri_verts).astype('u4')
-        data.append(dict(name=name, color=colour, stage=stage, kind=kind,
+        data.append(dict(name=name, color=colour, stage=stage, kind=kind, group=group,
                          v=base64.b64encode(v.tobytes()).decode(), f=base64.b64encode(f.tobytes()).decode()))
     OUT.mkdir(exist_ok=True)
-    html = PAGE.read_text(encoding='utf8').replace('/*DATA*/', json.dumps(data))
+    html = PAGE.read_text(encoding='utf8').replace('/*DATA*/', json.dumps(data)).replace('/*JOINTS*/', json.dumps(JOINTS))
     (OUT / 'index.html').write_text(html, encoding='utf8')
     print(f'{len(html) // 1024} KB, {len(data)} parts')
 

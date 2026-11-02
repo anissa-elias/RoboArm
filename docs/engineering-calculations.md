@@ -94,7 +94,7 @@ This is commanded resolution, not accuracy. Backlash, belt stretch and flex will
 
 With the arm fully out, 2.60 kg sits 284 mm from the axis, which is 4.70 N·m about the base edge. A 1.9 kg base gives 1.86 N·m against it, a ratio of 0.40.
 
-**The base tips over unless it is clamped or bolted down.** It is not safe to run free-standing.
+**The base tips over unless it is clamped or bolted down.** It is not safe to run free-standing. The mounting plate adds about 0.3 kg, which does not change this, so clamp the plate to the table.
 
 ## Power at 24 V
 
