@@ -55,8 +55,9 @@ TENSION = 3.0
 
 # Arm root
 ROOT_R, ROOT_HALF = 28.0, 28.5
-SOCKET, SOCKET_Y, SOCKET_DEPTH = 20.3, 14.0, 35.0
-Z_ROOT_TOP = Z_J2 + 50.0
+Z_ROOT_TOP = Z_J2 + 36.0
+ROOT_BOLT_X, ROOT_BOLT_Y = 12.0, 20.0
+WIRE_X, WIRE_Y = (-12.0, 12.0), (-25.0, -4.0)      # wire channel up through the neck
 HUB_D = B_ID - FIT
 Y_HUB_MAG, Y_HUB_PULLEY = -42.0, TOWER_OUT
 MAG_D, MAG_H = 6.2, 2.5
@@ -70,7 +71,8 @@ def ycyl(y0, y1, r, x=0.0, z=Z_J2):
 
 def housing():
     q = J2_BOLT_SQ / 2
-    plate = box(-108, 50, -46, 43, Z_ROTOR_TOP, Z_PLATE_TOP)
+    plate = Manifold.batch_hull([cyl(PLATE_T, 62, Z_ROTOR_TOP), cyl(PLATE_T, 16, Z_ROTOR_TOP, X_MOTOR - 16, 24), cyl(PLATE_T, 16, Z_ROTOR_TOP, X_MOTOR - 16, -46)])
+    plate -= box(-200, 200, 43, 200, Z_ROTOR_TOP - 1, Z_PLATE_TOP + 1)     # keep clear of the pulley
     body = plate
     for sy in (-1, 1):
         y0, y1 = sorted((sy * TOWER_IN, sy * TOWER_OUT))
@@ -111,17 +113,16 @@ def arm_root():
     neck = box(-17, 17, -ROOT_HALF, ROOT_HALF, Z_J2, Z_ROOT_TOP)
     collar = ycyl(-TOWER_IN, -ROOT_HALF + 0.1, 18) + ycyl(ROOT_HALF - 0.1, TOWER_IN, 18)
     hub = ycyl(Y_HUB_MAG, -TOWER_IN + 0.1, HUB_D / 2) + ycyl(TOWER_IN - 0.1, Y_HUB_PULLEY, HUB_D / 2)
-    tab = box(-27, -16, -6, 6, Z_J2 + 30, Z_J2 + 44)          # spring anchor
+    tab = box(-27, -16, -6, 6, Z_J2 + 18, Z_J2 + 32)          # spring anchor
     body = barrel + neck + collar + hub + tab
 
     cuts = []
-    for sy in (-1, 1):
-        y = sy * SOCKET_Y
-        cuts.append(box(-SOCKET / 2, SOCKET / 2, y - SOCKET / 2, y + SOCKET / 2, Z_ROOT_TOP - SOCKET_DEPTH, Z_ROOT_TOP + 1))
-        for z in (Z_ROOT_TOP - 10, Z_ROOT_TOP - 25):          # M4 through bolts into the extrusion
-            cuts.append(Manifold.cylinder(40, 2.2, 2.2, 48).rotate((0, 90, 0)).translate((-20, y, z)))
+    for sx in (-1, 1):
+        for sy in (-1, 1):                                    # M4 bolts up into the upper arm
+            cuts.append(cyl(16, 2.1, Z_ROOT_TOP - 15, sx * ROOT_BOLT_X, sy * ROOT_BOLT_Y))
+    cuts.append(box(WIRE_X[0], 40, WIRE_Y[0], WIRE_Y[1], Z_J2 + 12, Z_ROOT_TOP + 1))   # wires enter from the front
     cuts.append(ycyl(Y_HUB_MAG - 1, Y_HUB_MAG + MAG_H, MAG_D / 2))
-    cuts.append(Manifold.cylinder(14, 2.6, 2.6, 48).rotate((-90, 0, 0)).translate((-21.5, -7, Z_J2 + 37)))
+    cuts.append(Manifold.cylinder(14, 2.6, 2.6, 48).rotate((-90, 0, 0)).translate((-21.5, -7, Z_J2 + 25)))
     for i in range(4):
         t = math.radians(45 + 90 * i)
         cuts.append(ycyl(Y_HUB_PULLEY - 9, Y_HUB_PULLEY + 1, 1.7, PULLEY_BOLT_PCD / 2 * math.cos(t), Z_J2 + PULLEY_BOLT_PCD / 2 * math.sin(t)))
@@ -156,13 +157,6 @@ def dummy_motor():
     shaft = ycyl(Y_FACE + WALL_T + 0.1, Y_FACE + SHAFT_L, 4, X_MOTOR, Z_MOTOR)
     pulley = ycyl(Y_PULLEY, Y_PULLEY + PULLEY_H, PD_MOTOR / 2, X_MOTOR, Z_MOTOR)
     return gbox + can + shaft + pulley
-
-
-def dummy_extrusion():
-    """Upper arm spine, for the swing check."""
-    a = box(-10, 10, SOCKET_Y - 10, SOCKET_Y + 10, Z_ROOT_TOP - SOCKET_DEPTH, Z_J2 + 221)
-    b = box(-10, 10, -SOCKET_Y - 10, -SOCKET_Y + 10, Z_ROOT_TOP - SOCKET_DEPTH, Z_J2 + 221)
-    return a + b
 
 
 def swing(m, deg):
@@ -201,7 +195,7 @@ def main():
     check('pulley', p, 'motor', motor)
     check('motor', motor, 'turntable', rot)
     print('Swing, J2 -35 to +90 deg:')
-    arm = r + p + dummy_extrusion()
+    arm = r + p
     worst = {}
     for deg in range(-35, 91, 5):
         moved = swing(arm, deg)

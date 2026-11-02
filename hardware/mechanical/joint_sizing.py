@@ -30,7 +30,7 @@ MOTORS = {
 DRIVES = {
     'J1': ('17HS19-1684S', 5.18, [8.0], 160, 45),
     'J2': ('17HS19-1684S', 13.73, [5.0], 100, 30),
-    'J3': ('17HS19-1684S', 5.18, [5.0], 100, 45),
+    'J3': ('17HS19-1684S', 5.18, [5.0], 80, 45),
     'J4': ('17HS08-1004S', 1.0, [3.0, 5.0], 80, 90),
     'J5': ('11HS20-0674S', 1.0, [3.0], 48, 90),
 }
@@ -45,8 +45,8 @@ def loads():
               + wrist_mass * (L3 + 0.01) + M['forearm'] * L3 * 0.55
               + M['j4_motor'] * 0.04 + M['elbow'] * 0.01)
     past_elbow = (pay + M['gripper'] + wrist_mass + M['forearm'] + M['j4_motor'] + M['elbow'])
-    # J3 motor sits on the upper arm 40 mm from the shoulder.
-    t2_total = t3 + G * (past_elbow * L2 + M['upper'] * L2 * 0.5 + M['j3_motor'] * 0.04)
+    # J3 motor sits on the upper arm 85 mm from the shoulder.
+    t2_total = t3 + G * (past_elbow * L2 + M['upper'] * L2 * 0.5 + M['j3_motor'] * 0.085)
     t2_self = t2_total - G * pay * (L2 + L3 + WRIST + TCP)
     t2 = t2_total - SPRING_BALANCE * t2_self
     points = [(pay, L2 + L3 + WRIST + TCP), (M['gripper'], L2 + L3 + WRIST + GRIP_CG),
@@ -108,7 +108,7 @@ def extras():
     base_mass = 1.9
     arm_cg = sum(m * r for m, r in [(PAYLOAD, L2 + L3 + WRIST + TCP), (M['gripper'], L2 + L3 + WRIST + GRIP_CG),
                                     (wrist, L2 + L3), (M['forearm'] + M['j4_motor'], L2 + L3 * 0.55),
-                                    (M['elbow'], L2), (M['upper'], L2 / 2), (M['j3_motor'], 0.04)]) / total
+                                    (M['elbow'], L2), (M['upper'], L2 / 2), (M['j3_motor'], 0.085)]) / total
     tip = total * (arm_cg - 0.1)
     keep = (base_mass) * 0.1
     print(f'  arm mass {total:.2f} kg at {1000 * arm_cg:.0f} mm from the axis: {G * tip:.2f} N·m tipping')

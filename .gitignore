@@ -29,3 +29,6 @@ log/
 .DS_Store
 Thumbs.db
 
+
+# Generated 3D viewer
+hardware/mechanical/viewer/

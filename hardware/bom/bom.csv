@@ -19,7 +19,7 @@ Phase,Category,Reference,Part,Qty needed,Pack size,Packs to buy,USD per pack,Lin
 1,Wiring,-,"18 AWG silicone wire kit (24 V, motors)",1,1,1,15,15.00,yes,estimate,https://www.amazon.com/CBAZY-Stranded-Flexible-Silicone-Electric/dp/B073RDBW7L,
 1,Wiring,-,22 AWG silicone wire kit (signals),1,1,1,13,13.00,yes,estimate,https://www.amazon.com/CBAZY-Flexible-Silicone-Stranded-Electric/dp/B073RF4YY4,
 1,Bearings,J1,"6813-2RS thin bearing, 65x85x10 mm",2,1,2,10,20.00,,rough,,Sizes are proposed until CAD is frozen
-1,Drive,J1,"GT2 closed belt, 400 mm long, 15 mm wide (400-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 400 mm
+1,Drive,J1,"GT2 closed belt, 360 mm long, 15 mm wide (360-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 360 mm
 1,Drive,J1,"GT2 20-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Bore must match the gearbox output shaft
 1,Structure,-,"M3/M4/M5 screw, nut and washer assortment",1,1,1,30,30.00,,rough,,
 1,Structure,-,M3/M4 brass heat-set inserts,1,1,1,12,12.00,,rough,,
@@ -45,14 +45,13 @@ Phase,Category,Reference,Part,Qty needed,Pack size,Packs to buy,USD per pack,Lin
 3,Bearings,J3,"6804 thin bearing, 20x32x7 mm",2,1,2,4,8.00,,rough,,
 3,Bearings,J4,"6802 bearing, 15x24x5 mm",2,1,2,3,6.00,,rough,,
 3,Drive,J2,"GT2 closed belt, 280 mm long, 15 mm wide (280-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 280 mm
-3,Drive,J3,"GT2 closed belt, 15 mm wide, length from CAD",1,1,1,10,10.00,,rough,,Do not use 6 mm belts here
+3,Drive,J3,"GT2 closed belt, 380 mm long, 15 mm wide (380-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 380 mm
 3,Drive,J4-J5,"GT2 closed belts, 6 mm wide, lengths from CAD",3,1,3,4,12.00,,rough,,Includes the long forearm run
 3,Drive,J2,"GT2 20-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Large pulley is printed
-3,Drive,J3,"GT2 20-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Large pulley is printed
+3,Drive,J3,"GT2 16-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Large 80T pulley is printed
 3,Drive,J3,GT2 idler for 15 mm belt,1,1,1,2,2.00,,rough,,Tensions the long belt
 3,Drive,J4,"GT2 small pulleys, 5 mm bore, 20T and 16T, for 6 mm belt",2,1,2,3.5,7.00,,rough,,Two belt stages; large pulleys are printed
 3,Drive,J4,GT2 idler for 6 mm belt,1,1,1,2,2.00,,rough,,Tensions the long belt
 3,Drive,J5,"GT2 16-tooth pulley, 5 mm bore, for 6 mm belt",1,1,1,3,3.00,,rough,,Large pulley is printed
 3,Drive,J2,"Extension springs for counterbalance, assortment",1,1,1,12,12.00,,rough,,Choose rate after weighing the real arm
-3,Structure,Upper arm,"2020 aluminium extrusion, 180 mm",2,2,1,12,12.00,,rough,,
 3,Structure,Forearm,"10 mm aluminium rod, 200 mm",2,2,1,10,10.00,,rough,,
