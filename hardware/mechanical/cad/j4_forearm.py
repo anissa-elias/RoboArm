@@ -72,9 +72,9 @@ def skin(off):
     root = Manifold.batch_hull([sec(X_ROOT, stem_hy, hz, STEM_C, r), sec(X_ROOT + 42, hy, hz, 0, r)])
     tube = Manifold.batch_hull([sec(X_ROOT + 42, hy, hz, 0, r), sec(X_W - 34, hy, hz, 0, r)])
     head = Manifold.batch_hull([sec(X_W - 34, hy, hz, 0, r), ycyl(-HEAD_HALF + off, HEAD_HALF - off, HEAD_R - off, X_W, Z_E)])
-    hump = Manifold.batch_hull([box(X_MOT - 25 + off, X_MOT + 25 - off, -18 + off, 9 - off, Z_E, Z_E + 4),
-                                ycyl(-18 + off, 9 - off, 14 - off, X_MOT - 12.5, Z_MOT + 15),
-                                ycyl(-18 + off, 9 - off, 14 - off, X_MOT + 12.5, Z_MOT + 15)])
+    hump = Manifold.batch_hull([box(X_MOT - 25 + off, X_MOT + 25 - off, -18 + off, 17 - off, Z_E + 12, Z_E + 16),
+                                ycyl(-18 + off, 17 - off, 14 - off, X_MOT - 12.5, Z_MOT + 15),
+                                ycyl(-18 + off, 17 - off, 14 - off, X_MOT + 12.5, Z_MOT + 15)])
     return root + tube + head + hump
 
 
