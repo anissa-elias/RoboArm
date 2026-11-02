@@ -33,14 +33,14 @@ for i in range(5):
     same(('U2', f'D{30+i}'), (d, '8'))
     same(('U2', f'D{36+i}'), (d, '1'), (f'R{21+i}', '2'))
     on((f'R{21+i}', '1'), '+5V')
-    for a, b in (('14', '4'), ('13', '3'), ('12', '1'), ('11', '2')):
+    for a, b in (('14', '2'), ('13', '1'), ('12', '3'), ('11', '4')):
         same((d, a), (f'M{i+1}', b))
     on((d, '16'), '+24V'); on((d, '15'), 'GND'); on((d, '9'), 'GND'); on((d, '10'), '+5V')
     addr = i % 3
     on((d, '2'), '+5V' if addr == 1 else 'GND'); on((d, '3'), '+5V' if addr == 2 else 'GND'); on((d, '6'), 'GND')
     same(('U2', f'A{i}'), (f'C{1+i}', '1'), (f'R{1+i}', '1'))
     same((f'R{1+i}', '2'), (f'ENC{1+i}', 'OUT'))
-    on((f'ENC{1+i}', 'VCC'), '+5V'); on((f'ENC{1+i}', 'GND'), 'GND'); on((f'ENC{1+i}', 'DIR'), 'GND'); on((f'C{1+i}', '2'), 'GND')
+    on((f'ENC{1+i}', 'VCC'), '+5V'); on((f'ENC{1+i}', 'GND'), 'GND'); on((f'ENC{1+i}', 'DIR'), 'GND'); on((f'ENC{1+i}', 'GPO'), '+5V'); on((f'C{1+i}', '2'), 'GND')
     on((f'C{20+i}', '1'), '+24V'); on((f'C{20+i}', '2'), 'GND')
 same(('U1', 'USBA_VBUS'), ('U2', 'USB_VBUS'))
 same(('U1', 'USBA_DP'), ('U2', 'USB_DP'))

@@ -188,9 +188,9 @@ PI = custom('Raspberry_Pi_5', pi_left, pi_right, 50.8)
 TMC = custom('TMC2209_StepStick',
              [('1', 'EN', P_), ('2', 'MS1', P_), ('3', 'MS2', P_), ('4', 'PDN/UART RX', P_), ('5', 'PDN/UART TX', P_),
               ('6', 'CLK', P_), ('7', 'STEP', P_), ('8', 'DIR', P_)],
-             [('16', 'VM', P_), ('15', 'GND', P_), ('14', 'B2', P_), ('13', 'B1', P_), ('12', 'A1', P_), ('11', 'A2', P_),
-              ('10', 'VDD/VIO', P_), ('9', 'GND', P_)], 48.26)
-MOTOR = custom('Stepper_NEMA17', [('4', 'B- (coil B)', P_), ('3', 'B+ (coil B)', P_), ('1', 'A+ (coil A)', P_), ('2', 'A- (coil A)', P_)], [], 40.64)
+             [('16', 'VM', P_), ('15', 'GND', P_), ('14', 'A2', P_), ('13', 'A1', P_), ('12', 'B1', P_), ('11', 'B2', P_),
+              ('10', 'VCC_IO', P_), ('9', 'GND', P_)], 48.26)
+MOTOR = custom('Stepper_NEMA17', [('2', 'A- (coil A)', P_), ('1', 'A+ (coil A)', P_), ('3', 'B+ (coil B)', P_), ('4', 'B- (coil B)', P_)], [], 40.64)
 PSU = custom('PSU_24V_Enclosed', [],
              [('VP', '+V', 'power_out'), ('VN', '-V', 'power_out')], 45.72)
 PIPSU = custom('Pi_USB_C_PSU', [], [('V5', '5.1V', P_), ('VG', 'GND', P_)], 40.64)
@@ -205,7 +205,7 @@ ESTOP = use_lib('Switch', 'SW_Push_Open')
 ENC = custom('AS5600_Encoder_Module', [('OUT', 'OUT', P_), ('SDA', 'SDA', P_), ('SCL', 'SCL', P_), ('GPO', 'GPO', P_), ('PGO', 'PGO', P_)],
              [('VCC', 'VCC', P_), ('GND', 'GND', P_), ('DIR', 'DIR', P_)], 30.48)
 
-text(20, 15, 'ROBOARM - FULL WIRING (REV D)', 3.81)
+text(20, 15, 'ROBOARM - FULL WIRING (REV E)', 3.81)
 text(20, 22, 'Every board pin shown. Wires drawn between parts. Power rails use KiCad power symbols (+24V, +5V, +6V, GND). Unused pins carry no-connect flags.', 1.524)
 
 # ---------------------------------------------------------------- AC + 24 V supply (top left)
@@ -272,7 +272,7 @@ for i in range(5):
     d = Part(TMC, f'DRV{i+1}', 'TMC2209 module (StepStick)', DRV_X, yd)
     m = Part(MOTOR, f'M{i+1}', MOTOR_PART[i], MOT_X, yd)
     drivers.append(d); motors.append(m)
-    for a, b in (('14', '4'), ('13', '3'), ('12', '1'), ('11', '2')):
+    for a, b in (('14', '2'), ('13', '1'), ('12', '3'), ('11', '4')):
         wire(d.pin(a), m.pin(b))
     stub_power(d.pin('10'), '+5V', 'R'); stub_power(d.pin('9'), 'GND', 'R')
     addr = i % 3                                  # bus A: DRV1-3, bus B: DRV4-5, addresses 0,1,2
@@ -332,8 +332,9 @@ for i in range(5):
     wire(rs.pin('2'), enc.pin('OUT'))
     stub_power(enc.pin('VCC'), '+5V', 'R'); stub_power(enc.pin('GND'), 'GND', 'R')
     stub_power(enc.pin('DIR'), 'GND', 'R', 10.16)
+    stub_power(enc.pin('GPO'), '+5V', 'L')                 # low selects programming mode, so hold it high
     enc.nc_rest()
-text(660.4, 22.86, 'Joint encoders: AS5600 reads a magnet on each joint OUTPUT shaft (after the gearbox), so the angle is absolute at power-up.\nOUT = analog angle (0-5 V) to Mega A0-A4 through 1k + 100 nF at the Mega end. DIR tied to GND sets direction.\nCheck the module runs at 5 V (VCC) before buying; SDA/SCL left free for later I2C use.', 1.27)
+text(660.4, 22.86, 'Joint encoders: AS5600 reads a magnet on each joint OUTPUT shaft (after the gearbox), so the angle is absolute at power-up.\nOUT = analog angle (0-5 V) to Mega A0-A4 through 1k + 100 nF at the Mega end. DIR tied to GND sets direction.\nCheck the module runs at 5 V (VCC) before buying; SDA/SCL left free for later I2C use. GPO tied to 5 V keeps OUT in analog mode.', 1.27)
 
 # ---------------------------------------------------------------- gripper servo + 6 V supply (wired off the 24 V bus)
 ORANGE = (200, 100, 0)
@@ -431,10 +432,10 @@ text(205.74, 106.68, '24 V BUS (red): bench supply + -> F0 -> VM on every driver
 text(40.64, 535.94,
      'NOTES\n'
      '1. Mega pins: STEP D22-26, DIR D30-34, EN D36-40 (LOW = driver on; 10k pull-ups keep drivers OFF while the Mega boots), encoders A0-A4, gripper PWM D9, tool I2C D20-D21.\n'
-     '2. TMC2209 standalone mode: UART mode: MS1/MS2 set each driver bus address (0-2), microstep is set over UART. CLK = GND selects the internal clock.\n'
-     '3. Check pin names against the silkscreen of the TMC2209 modules you buy (vendors differ). Set phase current with the module trimmer before connecting the arm.\n'
+     '2. TMC2209 in UART mode: MS1/MS2 set each driver bus address (0-3), microsteps and current are set over UART by the firmware. CLK = GND selects the internal clock.\n'
+     '3. Pin names follow BIGTREETECH TMC2209 V1.2/V1.3. UART is on pin 4 (factory default). Check against the silkscreen of the modules you buy. The trimmer is not used in UART mode.\n'
      '4. TMC2209 VM max is about 29 V: 24 V only. Never plug or unplug a motor with 24 V present. Verify coil pairs with an ohmmeter.\n'
-     '5. Modules sit in female headers on perfboard. Heatsink on every module, 40 mm fan over the row.\n'
+     '5. Modules sit in female headers on perfboard, see carrier/. Heatsink on every module, 40 mm fan over the row.\n'
      '6. All grounds common. Never connect 24 V or 6 V to the Mega 5 V pins.', 1.524)
 
 # ---------------------------------------------------------------- bill of materials (all Amazon)
@@ -474,7 +475,7 @@ for prt in (mega, pi, psu, pipsu, buck):
 # ---------------------------------------------------------------- write
 lib = '\n'.join(v[0] for v in libdefs.values())
 sch = (f'(kicad_sch (version 20250114) (generator "eeschema") (generator_version "9.0") (uuid {ROOT}) (paper "A1")\n'
-       f'(title_block (title "RoboArm - full wiring") (date "2026-11-02") (rev "D") (company "RoboArm") (comment 1 "Module wiring - not a validated machine"))\n'
+       f'(title_block (title "RoboArm - full wiring") (date "2026-11-02") (rev "E") (company "RoboArm") (comment 1 "Module wiring - not a validated machine"))\n'
        f'(lib_symbols {lib})\n' + '\n'.join(items) +
        '\n(sheet_instances (path "/" (page "1")))\n(embedded_fonts no))\n')
 for old in ('controller.kicad_sch', 'joints_1_3.kicad_sch', 'joints_4_6.kicad_sch', 'homing_gripper.kicad_sch'):
