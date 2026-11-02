@@ -27,7 +27,7 @@ def on(rp, netname):
     if n != netname:
         fails.append(f'{rp} on net {n}, expected {netname}')
 
-for i in range(6):
+for i in range(5):
     d = f'DRV{i+1}'
     same(('U2', f'D{22+i}'), (d, '7'))
     same(('U2', f'D{30+i}'), (d, '8'))
@@ -51,10 +51,17 @@ on(('U2', 'P5V'), '+5V')
 same(('PS1', 'VP'), ('F0', '1')); on(('PS1', 'VN'), 'GND')
 same(('F0', '2'), ('K1', '30'), ('SW1', '2')); same(('SW1', '1'), ('K1', '85')); on(('K1', '86'), 'GND'); on(('K1', '87'), '+24V')
 same(('U2', 'D17'), ('DRV1', '4'), ('DRV2', '4'), ('DRV3', '4'), ('R31', '2')); same(('U2', 'D16'), ('R31', '1'))
-same(('U2', 'D15'), ('DRV4', '4'), ('DRV5', '4'), ('DRV6', '4'), ('R32', '2')); same(('U2', 'D14'), ('R32', '1'))
+same(('U2', 'D15'), ('DRV4', '4'), ('DRV5', '4'), ('R32', '2')); same(('U2', 'D14'), ('R32', '1'))
 on(('F1', '1'), '+24V'); same(('F1', '2'), ('U6', 'VI')); same(('U6', 'VO'), ('F2', '1')); on(('F2', '2'), '+6V')
-same(('U2', 'D9'), ('R13', '1')); same(('R13', '2'), ('M7', '1'))
-on(('M7', '2'), '+6V'); on(('M7', '3'), 'GND')
+same(('U2', 'D9'), ('R13', '1')); same(('R13', '2'), ('J6', '1'))
+same(('J6', 'T1'), ('M7', '1')); same(('J6', 'T2'), ('M7', '2')); same(('J6', 'T3'), ('M7', '3'))
+on(('J6', '2'), '+6V'); on(('J6', '3'), 'GND'); on(('J6', 'V5'), '+5V')   # M7 is on the tool side, joined through the plug J6
+same(('U2', 'D20'), ('J6', 'SDA')); same(('U2', 'D21'), ('J6', 'SCL'))
+same(('D1', '1'), ('K1', '85')); on(('D1', '2'), 'GND')
+on(('FAN1', '1'), '+5V'); on(('FAN1', '2'), 'GND')
+for gone in ('DRV6', 'M6', 'ENC6', 'R6', 'C6', 'C25', 'R26'):
+    if any(gone == n[0] for ns in nets.values() for n in ns):
+        fails.append(f'{gone} should be removed')
 
 print(f'{len(nets)} nets checked')
 print('\n'.join(fails) if fails else 'ALL EXPECTED CONNECTIONS PRESENT')

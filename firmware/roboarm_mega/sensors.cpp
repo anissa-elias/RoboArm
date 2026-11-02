@@ -11,7 +11,6 @@ static TMC2209Stepper drv[NUM_JOINTS] = {
   TMC2209Stepper(&Serial2, R_SENSE, TMC_ADDR[2]),
   TMC2209Stepper(&Serial3, R_SENSE, TMC_ADDR[3]),
   TMC2209Stepper(&Serial3, R_SENSE, TMC_ADDR[4]),
-  TMC2209Stepper(&Serial3, R_SENSE, TMC_ADDR[5]),
 };
 
 static float enc_offset[NUM_JOINTS];

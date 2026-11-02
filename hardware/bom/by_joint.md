@@ -9,9 +9,9 @@ Parts still to buy, split by where they are used. Totals match [bom.csv](bom.csv
 | J3 elbow | $69.60 |
 | J4 wrist | $43.60 |
 | J5 wrist twist | $37.60 |
-| J6 gripper | $42.99 |
+| J6 gripper | $48.99 |
 | Shared | $190.48 |
-| **Total** | **$546.47** |
+| **Total** | **$552.47** |
 
 Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pack. The pack is bought once. Each also lists one AS5600 encoder at $3.00, its share of the $15 10-pack, which leaves 5 spares.
 
@@ -84,8 +84,9 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 |---|---|---|
 | MG996R servo, 4-pack | 1 | $22.99 |
 | TPU filament or rubber jaw pads | 1 | $10.00 |
+| 4 mm steel rod, 110 mm | 2 | $6.00 |
 | GX12 6-pin tool plug | 1 | $10.00 |
-| **Total** | | **$42.99** |
+| **Total** | | **$48.99** |
 
 ## Shared
 

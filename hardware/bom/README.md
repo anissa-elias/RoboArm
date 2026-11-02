@@ -4,10 +4,10 @@ Complete build list for the arm in [docs/mechanical-design.md](../../docs/mechan
 
 | Phase | Cost |
 |---|---|
-| Phase 1: base, J1, gripper and electronics test | $319 |
+| Phase 1: base, J1, gripper and electronics test | $325 |
 | Phase 2: the rest of the electronics and motors | $103 |
 | Phase 3: mechanical for the arm | $124 |
-| **Total, before tax and shipping** | **about $546** |
+| **Total, before tax and shipping** | **about $552** |
 
 Totals leave out parts already owned (marked Owned, about $321). Confirm the Raspberry Pi is a Pi 5 and that the 24 V supply can deliver 5 A.
 
@@ -55,7 +55,8 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | M7 | [MG996R servo, 4-pack (J6 gripper)](https://www.amazon.com/MG996R-Copper-Digital-Helicopter-Control/dp/B0DK1V5ZSM) | 1 | 1 x 4-pack | $22.99 | checked |
 | U6 | [XL4015 5 A buck module, 3-pack (set to 6.0 V)](https://www.amazon.com/HiLetgo-1-25-36V-Converter-Adjustable-Step-down/dp/B00LOG4XC0) | 1 | 1 x 3-pack | $9.49 | checked |
 | Gripper | TPU filament or rubber pads for jaws | 1 | 1 | $10.00 | rough |
-| | **Subtotal to buy** | | | **$319.47** | |
+| Gripper | 4 mm steel rod, 110 mm (gripper guides) | 2 | 1 x 2-pack | $6.00 | rough |
+| | **Subtotal to buy** | | | **$325.47** | |
 
 ## Phase 2: the rest of the electronics and motors (buy after J1 works)
 

@@ -197,12 +197,15 @@ PIPSU = custom('Pi_USB_C_PSU', [], [('V5', '5.1V', P_), ('VG', 'GND', P_)], 40.6
 BUCK = custom('Buck_Module', [('VI', 'IN+', P_), ('GI', 'IN-', P_)], [('VO', 'OUT+', 'power_out'), ('GO', 'OUT-', P_)], 35.56)
 R = use_lib('Device', 'R'); C = use_lib('Device', 'C'); CP = use_lib('Device', 'C_Polarized')
 FUSE = use_lib('Device', 'Fuse'); SERVO = use_lib('Motor', 'Motor_Servo')
+DIODE = use_lib('Device', 'D'); FAN = use_lib('Motor', 'Fan')
+TOOL = custom('Tool_Plug_6pin', [('1', 'PWM', P_), ('2', '6V', P_), ('3', 'GND', P_), ('V5', '5V', P_), ('SDA', 'SDA', P_), ('SCL', 'SCL', P_)],
+              [('T1', 'PWM', P_), ('T2', '6V', P_), ('T3', 'GND', P_)], 25.4)
 RELAY = custom('Relay_24V_SPST_NO', [('30', '30 COM', P_), ('85', '85 coil+', P_)], [('87', '87 NO', P_), ('86', '86 coil-', P_)], 20.32)
 ESTOP = use_lib('Switch', 'SW_Push_Open')
 ENC = custom('AS5600_Encoder_Module', [('OUT', 'OUT', P_), ('SDA', 'SDA', P_), ('SCL', 'SCL', P_), ('GPO', 'GPO', P_), ('PGO', 'PGO', P_)],
              [('VCC', 'VCC', P_), ('GND', 'GND', P_), ('DIR', 'DIR', P_)], 30.48)
 
-text(20, 15, 'ROBOARM - FULL WIRING (REV C)', 3.81)
+text(20, 15, 'ROBOARM - FULL WIRING (REV D)', 3.81)
 text(20, 22, 'Every board pin shown. Wires drawn between parts. Power rails use KiCad power symbols (+24V, +5V, +6V, GND). Unused pins carry no-connect flags.', 1.524)
 
 # ---------------------------------------------------------------- AC + 24 V supply (top left)
@@ -218,6 +221,11 @@ wire(jt, estop.pin('2'))
 eb = estop.pin('1')
 wire(eb, (eb[0], g(eb[1] + 2.54)), (322.58, g(eb[1] + 2.54)), (322.58, k1.pin('85')[1]), k1.pin('85'))
 g86 = (g(k1.pin('86')[0] + 2.54), k1.pin('86')[1]); wire(k1.pin('86'), g86); power('GND', g86, 0)
+# flyback diode across the relay coil: cathode on the coil side, anode to ground
+d1 = Part(DIODE, 'D1', '1N4007', 309.88, g(eb[1] + 12.7), 90)
+coil_tap = (320.04, g(eb[1] + 2.54))
+wire(d1.pin('1'), (d1.pin('1')[0], coil_tap[1]), coil_tap); junction(coil_tap)
+d1g = (d1.pin('2')[0], g(d1.pin('2')[1] + 7.62)); wire(d1.pin('2'), d1g); power('GND', d1g, 0)
 p24 = (g(k1.pin('87')[0] + 7.62), VPY)
 wire(k1.pin('87'), p24, color=RED)
 power('+24V', p24, 0)
@@ -253,22 +261,25 @@ for vp in ('D5V1', 'D5V2'):
 
 # ---------------------------------------------------------------- drivers + motors
 DRV_X, MOT_X = 469.9, 571.5
-joint = ['Base', 'Shoulder', 'Elbow', 'Wrist roll', 'Wrist pitch', 'Tool roll']
+joint = ['Base', 'Shoulder', 'Elbow', 'Wrist', 'Wrist twist']
+MOTOR_PART = ['17HS19-1684S-PG5', '17HS19-1684S-PG14', '17HS19-1684S-PG5', '17HS08-1004S', '11HS20-0674S']
+MOTOR_NOTE = ['0.52 Nm 1.68 A + 5.18:1, set 1.4 A RMS', '0.52 Nm 1.68 A + 13.73:1, set 1.4 A RMS', '0.52 Nm 1.68 A + 5.18:1, set 1.4 A RMS',
+              '0.16 Nm 1 A, set 1.0 A RMS', '0.12 Nm 0.67 A, set 0.67 A RMS']
 chan = iter([g(330.2 + k * 2.54) for k in range(40)])
 drivers, motors = [], []
-for i in range(6):
+for i in range(5):
     yd = g(93.98 + i * 81.28)
     d = Part(TMC, f'DRV{i+1}', 'TMC2209 module (StepStick)', DRV_X, yd)
-    m = Part(MOTOR, f'M{i+1}', '17HS19-2004S1' if i < 3 else '17HS08-1004S', MOT_X, yd)
+    m = Part(MOTOR, f'M{i+1}', MOTOR_PART[i], MOT_X, yd)
     drivers.append(d); motors.append(m)
     for a, b in (('14', '4'), ('13', '3'), ('12', '1'), ('11', '2')):
         wire(d.pin(a), m.pin(b))
     stub_power(d.pin('10'), '+5V', 'R'); stub_power(d.pin('9'), 'GND', 'R')
-    addr = i % 3                                  # bus A: DRV1-3, bus B: DRV4-6, addresses 0,1,2
+    addr = i % 3                                  # bus A: DRV1-3, bus B: DRV4-5, addresses 0,1,2
     stub_power(d.pin('2'), '+5V' if addr == 1 else 'GND', 'L')   # MS1 = address bit 0
     stub_power(d.pin('3'), '+5V' if addr == 2 else 'GND', 'L')   # MS2 = address bit 1
     stub_power(d.pin('6'), 'GND', 'L')                           # CLK = internal clock
-    text(MOT_X - 20.32, yd + 13.97, f'J{i+1} {joint[i]}: ' + ('0.59 Nm 2 A, set 1.4 A RMS' if i < 3 else '0.16 Nm 1 A, set 0.7 A RMS'), 1.27)
+    text(MOT_X - 20.32, yd + 13.97, f'J{i+1} {joint[i]}: ' + MOTOR_NOTE[i], 1.27)
 
 # ---------------------------------------------------------------- drawn 24 V bus (red) and motor ground return (black)
 BUS24_X, BUSG_X = 515.62, 520.7
@@ -305,10 +316,10 @@ for m in motors:
 
 # ---------------------------------------------------------------- joint encoders (AS5600, absolute angle on each joint output)
 NODE_X = 680.72
-for i in range(6):
+for i in range(5):
     a = mega.pin(f'A{i}')
     cxl = g(266.7 - i * 2.54)              # channel left of the Mega
-    ycorr = g(448.94 + i * 2.54)            # corridor between DRV5 and DRV6
+    ycorr = g(448.94 + i * 2.54)            # corridor below DRV5
     xup = g(632.46 + i * 2.54)
     yn = g(drivers[i].y + 2.54)
     node = (NODE_X, yn)
@@ -322,7 +333,7 @@ for i in range(6):
     stub_power(enc.pin('VCC'), '+5V', 'R'); stub_power(enc.pin('GND'), 'GND', 'R')
     stub_power(enc.pin('DIR'), 'GND', 'R', 10.16)
     enc.nc_rest()
-text(660.4, 22.86, 'Joint encoders: AS5600 reads a magnet on each joint OUTPUT shaft (after the gearbox), so the angle is absolute at power-up.\nOUT = analog angle (0-5 V) to Mega A0-A5 through 1k + 100 nF at the Mega end. DIR tied to GND sets direction.\nCheck the module runs at 5 V (VCC) before buying; SDA/SCL left free for later I2C use.', 1.27)
+text(660.4, 22.86, 'Joint encoders: AS5600 reads a magnet on each joint OUTPUT shaft (after the gearbox), so the angle is absolute at power-up.\nOUT = analog angle (0-5 V) to Mega A0-A4 through 1k + 100 nF at the Mega end. DIR tied to GND sets direction.\nCheck the module runs at 5 V (VCC) before buying; SDA/SCL left free for later I2C use.', 1.27)
 
 # ---------------------------------------------------------------- gripper servo + 6 V supply (wired off the 24 V bus)
 ORANGE = (200, 100, 0)
@@ -339,8 +350,13 @@ wire(f2.pin('2'), p6, color=ORANGE); power('+6V', p6, 0)
 fl6 = (p6[0], g(p6[1] + 5.08)); wire(p6, fl6); junction(p6); power('PWR_FLAG', fl6, 180)
 c7 = Part(CP, 'C7', '1000uF', 607.06, 548.64)
 c8 = Part(C, 'C8', '100nF', 619.76, 548.64)
-servo = Part(SERVO, 'M7', 'MG995 / MG996R gripper servo', 645.16, Y_R)
-rail6 = [p6[0], 607.06, 619.76, servo.pin('2')[0]]
+tool = Part(TOOL, 'J6', 'Tool plug, GX12 6-pin', 655.32, Y_R)
+servo = Part(SERVO, 'M7', 'MG996R gripper servo', 701.04, Y_R)
+for ta, sa in (('T1', '1'), ('T2', '2'), ('T3', '3')):
+    wire(tool.pin(ta), (g(tool.pin(ta)[0] + 5.08), tool.pin(ta)[1]), (g(tool.pin(ta)[0] + 5.08), servo.pin(sa)[1]), servo.pin(sa))
+x6 = g(tool.pin('2')[0] - 5.08)
+wire((x6, Y_R), (x6, tool.pin('2')[1]), tool.pin('2'), color=ORANGE)
+rail6 = [p6[0], 607.06, 619.76, x6]
 for a, b in zip(rail6, rail6[1:]):
     wire((a, Y_R), (b, Y_R), color=ORANGE)
 for x in rail6[1:-1]:
@@ -350,12 +366,12 @@ wire((619.76, Y_R), c8.pin('1'), color=ORANGE)
 # ground rail along the bottom, fed from the black return bus
 gx_in = g(buck.pin('GI')[0] - 2.54)
 gx_out = g(buck.pin('GO')[0] + 2.54)
-gx_srv = g(servo.pin('3')[0] - 2.54)
+gx_srv = g(tool.pin('3')[0] - 2.54)
 wire(buck.pin('GI'), (gx_in, buck.pin('GI')[1]), (gx_in, Y_GR), color=BLACK)
 wire(buck.pin('GO'), (gx_out, buck.pin('GO')[1]), (gx_out, Y_GR), color=BLACK)
 wire(c7.pin('2'), (607.06, Y_GR), color=BLACK)
 wire(c8.pin('2'), (619.76, Y_GR), color=BLACK)
-wire(servo.pin('3'), (gx_srv, servo.pin('3')[1]), (gx_srv, Y_GR), color=BLACK)
+wire(tool.pin('3'), (gx_srv, tool.pin('3')[1]), (gx_srv, Y_GR), color=BLACK)
 railg = sorted({BUSG_X, gx_in, gx_out, 607.06, 619.76, gx_srv})
 for a, b in zip(railg, railg[1:]):
     wire((a, Y_GR), (b, Y_GR), color=BLACK)
@@ -363,7 +379,16 @@ for x in railg[1:-1]:
     junction((x, Y_GR))
 # gripper PWM from Mega D9 through R13
 r13 = Part(R, 'R13', '1k', 629.92, 528.32)
-wire(r13.pin('2'), (629.92, servo.pin('1')[1]), servo.pin('1'))
+wire(r13.pin('2'), (629.92, tool.pin('1')[1]), tool.pin('1'))
+stub_power(tool.pin('V5'), '+5V', 'L')
+for pname, tpin, ybot, xoff in (('D20', 'SDA', 580.39, 7.62), ('D21', 'SCL', 582.93, 10.16)):
+    a_, b_ = mega.pin(pname), tool.pin(tpin)   # run below the power rail, clear of the buck module
+    cx_, xin = next(chan), g(b_[0] - xoff)
+    wire(a_, (cx_, a_[1]), (cx_, ybot), (xin, ybot), (xin, b_[1]), b_)
+tool.used.update({'T1', 'T2', 'T3'})
+fan = Part(FAN, 'FAN1', '40 mm 5 V fan over driver row', 571.5, 500.38)
+power('+5V', fan.pin('1'), 0); power('GND', fan.pin('2'), 0)
+
 cxs = next(chan)
 a9 = mega.pin('D9')
 wire(a9, (cxs, a9[1]), (cxs, 520.7), (629.92, 520.7), r13.pin('1'))
@@ -387,7 +412,7 @@ for grp, (txp, rxp, trunk_x, yrx, ytx, rref) in enumerate((('D16', 'D17', 420.37
         wire((trunk_x, a), (trunk_x, b))
     for y in ys[1:-1]:
         junction((trunk_x, y))
-text(375.92, 29.21, 'UART bus A: Mega Serial2 (TX2 D16 via 1k, RX2 D17) -> PDN/UART of DRV1-3 (addr 0,1,2).\nUART bus B: Mega Serial3 (TX3 D14 via 1k, RX3 D15) -> DRV4-6. Gives per-joint load (StallGuard), temperature and open-wire flags.', 1.27)
+text(375.92, 29.21, 'UART bus A: Mega Serial2 (TX2 D16 via 1k, RX2 D17) -> PDN/UART of DRV1-3 (addr 0,1,2).\nUART bus B: Mega Serial3 (TX3 D14 via 1k, RX3 D15) -> DRV4-5. Gives per-joint load (StallGuard), temperature and open-wire flags.', 1.27)
 text(527.05, 575.31, 'Gripper power: 24 V bus -> F1 -> U6 buck (set 6.0 V with a meter BEFORE connecting the servo) -> F2 -> 6 V (orange) -> C7, C8, servo.', 1.27)
 
 wire(p24, (p24[0], Y24), (BUS24_X, Y24), color=RED)
@@ -405,7 +430,7 @@ text(205.74, 106.68, '24 V BUS (red): bench supply + -> F0 -> VM on every driver
 # ---------------------------------------------------------------- notes
 text(40.64, 535.94,
      'NOTES\n'
-     '1. Mega pins: STEP D22-27, DIR D30-35, EN D36-41 (LOW = driver on; 10k pull-ups keep drivers OFF while the Mega boots), encoders A0-A5, gripper PWM D9.\n'
+     '1. Mega pins: STEP D22-26, DIR D30-34, EN D36-40 (LOW = driver on; 10k pull-ups keep drivers OFF while the Mega boots), encoders A0-A4, gripper PWM D9, tool I2C D20-D21.\n'
      '2. TMC2209 standalone mode: UART mode: MS1/MS2 set each driver bus address (0-2), microstep is set over UART. CLK = GND selects the internal clock.\n'
      '3. Check pin names against the silkscreen of the TMC2209 modules you buy (vendors differ). Set phase current with the module trimmer before connecting the arm.\n'
      '4. TMC2209 VM max is about 29 V: 24 V only. Never plug or unplug a motor with 24 V present. Verify coil pairs with an ohmmeter.\n'
@@ -414,33 +439,31 @@ text(40.64, 535.94,
 
 # ---------------------------------------------------------------- bill of materials (all Amazon)
 BOM_ROWS = [
-    ('Ref', 'Qty', 'Part', 'Buy on Amazon (ASIN)', 'Est.'),
-    ('U1', '1', 'Raspberry Pi 5 8GB', 'not included', '-'),
-    ('PS2', '1', 'Official Raspberry Pi 27 W USB-C supply', 'not included', '-'),
-    ('U2', '1', 'Arduino Mega 2560 R3', 'not included', '-'),
-    ('PS1', '1', 'Lab bench supply, 24 V, 3 A limit', 'not included', '-'),
-    ('DRV1-DRV6', '6', 'BIGTREETECH TMC2209 V1.3 + heatsink', '5-pack + 1 single (B07ZQ3C1XW)', '$40'),
-    ('M1-M3', '3', 'STEPPERONLINE Nema 17 17HS19-2004S1, 59 Ncm 2 A', '3-pack (B00Y2HJE22)', '$30'),
-    ('M4-M6', '3', 'STEPPERONLINE Nema 17 17HS08-1004S, 16 Ncm 1 A', '3 singles (B00PNEQ79Q)', '$33'),
-    ('M7', '1', 'MG996R servo (gripper)', '4-pack (B0DK1V5ZSM)', '$17'),
-    ('U6', '1', 'XL4015 5 A buck module, set 6.0 V', '3-pack (B00LOG4XC0)', '$10'),
-    ('ENC1-ENC6', '6', 'AS5600 magnetic encoder module + diametric magnet', '10-pack (B0D3WMK5MT)', '$15'),
-    ('F0-F2', '3', 'Inline ATO fuse holder + fuses', '5-pack kit (B0B4JTWJDT)', '$12'),
-    ('SW1', '1', 'E-stop, 22 mm latching mushroom, 1 NC', 'COMOK (B07MJPRMRL)', '$9'),
-    ('K1', '1', '24 V 30 A relay, normally open, with socket', 'ObabO-type 24 V with socket (B0CQFG7WZV)', '$8'),
-    ('C7, C20-C25', '7', 'Electrolytic 1000 uF 16 V (x1), 100 uF 35 V (x6)', 'assortment (B0DDCB76H9)', '$12'),
-    ('C1-C6, C8', '7', 'Ceramic 100 nF', 'assortment (B07P8N8BW9)', '$10'),
-    ('R1-R6, R13, R21-R26, R31-R32', '15', '1k (x9), 10k (x6) metal film 1/4 W', 'ELEGOO kit (B072BL2VX1)', '$10'),
-    ('-', '1', 'Driver carrier: prototype board', 'ElectroCookie 3-pack (B082KY5Y5Z)', '$12'),
-    ('-', '1', '2.54 mm female headers (driver sockets)', 'Glarks kit (B076GZXW3Z)', '$8'),
-    ('-', '1', '40 mm 5 V fan over driver row', 'WINSINN 2-pack (B08R9JJDYP)', '$9'),
-    ('-', '1', 'USB-A to USB-B cable (Pi to Mega)', 'Amazon Basics (B00NH11KIK)', '$5'),
-    ('-', '1', '18 AWG silicone wire (24 V, motors)', 'CBAZY kit (B073RDBW7L)', '$15'),
-    ('-', '1', '22 AWG silicone wire (signals)', 'CBAZY kit (B073RF4YY4)', '$13'),
-    ('TOTAL', '', 'New purchases, estimate before tax and shipping', '', '$268'),
+    ('Ref', 'Qty', 'Part', 'Note', ''),
+    ('U1', '1', 'Raspberry Pi 5 8GB', 'owned', ''),
+    ('PS2', '1', 'Official Raspberry Pi 27 W USB-C supply', 'owned', ''),
+    ('U2', '1', 'Arduino Mega 2560 R3', 'owned', ''),
+    ('PS1', '1', '24 V supply', 'owned', ''),
+    ('DRV1-DRV5', '5', 'BIGTREETECH TMC2209 V1.3 + heatsink', '', ''),
+    ('M1, M3', '2', 'STEPPERONLINE 17HS19-1684S-PG5', 'J1, J3', ''),
+    ('M2', '1', 'STEPPERONLINE 17HS19-1684S-PG14', 'J2', ''),
+    ('M4', '1', 'STEPPERONLINE 17HS08-1004S', 'J4', ''),
+    ('M5', '1', 'STEPPERONLINE 11HS20-0674S', 'J5', ''),
+    ('M7', '1', 'MG996R servo', 'J6 gripper tool', ''),
+    ('J6', '1', 'GX12 6-pin tool plug', '', ''),
+    ('U6', '1', 'XL4015 5 A buck module, set 6.0 V', '', ''),
+    ('ENC1-ENC5', '5', 'AS5600 magnetic encoder module + diametric magnet', '', ''),
+    ('F0-F2', '3', 'Inline ATO fuse holders, 10 A, 2 A and 3 A fuses', '', ''),
+    ('SW1', '1', 'E-stop, 22 mm latching mushroom, 1 NC', '', ''),
+    ('K1', '1', '24 V coil relay, normally open, with socket', '', ''),
+    ('D1', '1', '1N4007 flyback diode', '', ''),
+    ('C7, C20-C24', '6', 'Electrolytic 1000 uF 16 V (x1), 100 uF 35 V (x5)', '', ''),
+    ('C1-C5, C8', '6', 'Ceramic 100 nF', '', ''),
+    ('R1-R5, R13, R21-R25, R31-R32', '13', '1k (x8), 10k (x5) metal film 1/4 W', '', ''),
+    ('FAN1', '1', '40 mm 5 V fan over driver row', '', ''),
 ]
 BX, BY = 30.48, 363.22
-text(BX, g(BY - 5.08), 'BILL OF MATERIALS (all Amazon; prices are estimates, check the cart; full links in bom.csv)', 1.524)
+text(BX, g(BY - 5.08), 'BILL OF MATERIALS (electrical parts; full list, links and prices in hardware/bom)', 1.524)
 for col, x in zip(range(5), (0, 30.48, 40.64, 132.08, 200.66)):
     text(BX + x, BY, '\n'.join(r[col] for r in BOM_ROWS), 1.27)
 
@@ -451,7 +474,7 @@ for prt in (mega, pi, psu, pipsu, buck):
 # ---------------------------------------------------------------- write
 lib = '\n'.join(v[0] for v in libdefs.values())
 sch = (f'(kicad_sch (version 20250114) (generator "eeschema") (generator_version "9.0") (uuid {ROOT}) (paper "A1")\n'
-       f'(title_block (title "RoboArm - full wiring") (date "2026-10-03") (rev "C") (company "RoboArm") (comment 1 "Module wiring - not a validated machine"))\n'
+       f'(title_block (title "RoboArm - full wiring") (date "2026-11-02") (rev "D") (company "RoboArm") (comment 1 "Module wiring - not a validated machine"))\n'
        f'(lib_symbols {lib})\n' + '\n'.join(items) +
        '\n(sheet_instances (path "/" (page "1")))\n(embedded_fonts no))\n')
 for old in ('controller.kicad_sch', 'joints_1_3.kicad_sch', 'joints_4_6.kicad_sch', 'homing_gripper.kicad_sch'):

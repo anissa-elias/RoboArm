@@ -1,13 +1,13 @@
 # Mechanical design
 
-Status: chosen joint layout, no CAD yet. Numbers come from [joint_sizing.py](../hardware/mechanical/joint_sizing.py). Masses in it are estimates, so re-run it as parts are weighed.
+Status: chosen joint layout. The base, J1 and gripper are modeled in [hardware/mechanical/cad](../hardware/mechanical/cad); J2-J5 are not yet. Full working is in [engineering-calculations.md](engineering-calculations.md), from [joint_sizing.py](../hardware/mechanical/joint_sizing.py). Masses in it are estimates, so re-run it as parts are weighed.
 
 ## Size target
 
 | | Niryo Ned2 | RoboArm target |
 |---|---|---|
 | Reach | 490 mm | 491 mm from the shoulder to the flange |
-| Payload | 300 g at 20 mm | 300 g, sized at 90 mm past the flange to include the gripper |
+| Payload | 300 g at 20 mm | 300 g, sized at 110 mm past the flange to include the gripper |
 | Weight | 7 kg | About 5-6 kg (estimate) |
 | Footprint | 181.6 x 187.5 mm | 200 x 200 mm |
 | Repeatability | ±0.5 mm | Not promised; about ±1-3 mm expected until measured |
@@ -25,10 +25,10 @@ Ned2 figures are from Niryo's [spec sheet](https://niryo.com/wp-content/uploads/
 
 | Joint | Motion | Axis | Range | Motor | Reduction | Design torque | Available | Margin | Max speed |
 |---|---|---|---|---|---|---|---|---|---|
-| J1 | Base rotation | Z, vertical | 335° | 17HS19-1684S-PG5 | 5.18 x 8 = 41.4:1 | 0.9 N·m | 9.2 | 9.8 | 54°/s |
-| J2 | Shoulder | Y, sideways | 125° | 17HS19-1684S-PG14 | 13.73 x 5 = 68.7:1 | 5.7 N·m with spring | 15.2 | 2.7 (1.5 without) | 33°/s |
-| J3 | Elbow | Y, sideways | 160° | 17HS19-1684S-PG5 | 5.18 x 5 = 25.9:1 | 4.2 N·m | 5.7 | 1.4 | 87°/s |
-| J4 | Wrist | Y, sideways | 220° | 17HS08-1004S | Belts 3 x 5 = 15:1 | 1.07 N·m | 1.10 | 1.03 | 150°/s |
+| J1 | Base rotation | Z, vertical | 335° | 17HS19-1684S-PG5 | 5.18 x 8 = 41.4:1 | 0.9 N·m | 9.2 | 9.7 | 54°/s |
+| J2 | Shoulder | Y, sideways | 125° | 17HS19-1684S-PG14 | 13.73 x 5 = 68.7:1 | 5.7 N·m with spring | 15.2 | 2.6 (1.5 without) | 33°/s |
+| J3 | Elbow | Y, sideways | 160° | 17HS19-1684S-PG5 | 5.18 x 5 = 25.9:1 | 4.3 N·m | 5.7 | 1.3 | 87°/s |
+| J4 | Wrist | Y, sideways | 220° | 17HS08-1004S at 1.0 A | Belts 3 x 5 = 15:1 | 1.17 N·m | 1.22 | 1.05 | 150°/s |
 | J5 | Wrist twist | X, along the hand | 290° | 11HS20-0674S | Belt 3:1 | 0.09 N·m | 0.18 | 2.1 | 750°/s |
 | J6 | Gripper | Open and close | 0-50 mm | MG996R servo | Rack and pinion | - | - | - | - |
 
@@ -65,7 +65,7 @@ A parallel two-jaw gripper, driven by the MG996R through a rack and pinion.
 | Item | Decision |
 |---|---|
 | Stroke | 0-50 mm opening |
-| Mechanism | 20 mm pitch-diameter pinion on the servo, two opposed racks on printed guides or 4 mm rods |
+| Mechanism | 21 mm pitch-diameter pinion (module 1.5, 14 teeth) on the servo, two opposed racks on two 4 mm rods. 110 mm wide, 130 mm long |
 | Grip force | Up to about 50 N from the servo's claimed stall torque. Limit by commanded position and use soft jaws |
 | Pads | TPU or rubber on replaceable screw-on fingers |
 | Mass | Under 200 g including the servo |
@@ -83,7 +83,7 @@ J6 is a swappable tool, not a fixed gripper. Every tool uses the same mount and 
 | Pins | 6 V, GND, servo PWM, 5 V, I2C SDA, I2C SCL (Mega D20, D21) |
 | Air | 4 mm OD silicone tube routed from the base to the wrist, capped when unused |
 | Tool power | 6 V up to 3 A from the servo rail. 5 V is logic only |
-| Weight limit | Tool plus payload under 500 g at 90 mm from the flange |
+| Weight limit | Tool plus payload under 500 g at 110 mm from the flange |
 
 | Tool | How it connects | Limit |
 |---|---|---|
@@ -117,7 +117,7 @@ The casing is the structure: printed PETG clamshells, stiffened with metal where
 
 | Risk | Plan |
 |---|---|
-| J4 margin is only 1.03 | The sizing is conservative, but measure it early. Fallback: raise the current to 1 A, lighten the wrist, or use a higher belt ratio |
+| J4 margin is only 1.05 at its full rated 1 A | Measure it early. Fallback: shorten the gripper, lighten the wrist, or use a higher belt ratio |
 | PG14 gearbox limit not confirmed | The design puts 2.1 N·m on it with no spring. Check the datasheet before buying; 3 N·m is an unconfirmed figure from a related listing |
 | J2 belt load is about 180 N with the spring, 320 N without | Test a 15 mm belt and printed pulley under load first. If teeth skip, use a larger pulley or a stronger belt |
 | No brakes | Reduced by the J2 spring, but the arm can still fall. Support it during testing |
@@ -125,7 +125,5 @@ The casing is the structure: printed PETG clamshells, stiffened with metal where
 
 ## Follow-up changes
 
-- `firmware/roboarm_mega/config.h`: move from 6 to 5 stepper joints, with `GEAR_RATIO` {41.4, 68.7, 25.9, 15, 3}, `RMS_MA` of 900 for J4 and 670 for J5, and new joint limits.
-- Schematic generator: 5 motors with new part values, 5 drivers, 5 encoders, a flyback diode on K1, and the fan.
 - URDF: use the axes and lengths in this document.
 - J2 housing: J1 tops out at 135 mm, 31 mm below the J2 axis, and the J2 pulley radius is 32 mm. Offset the pulley to one side or pocket it into the turntable.
