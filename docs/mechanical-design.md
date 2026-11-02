@@ -1,6 +1,6 @@
 # Mechanical design
 
-Status: chosen joint layout. The base, J1, J2, J3 and gripper are modeled in [hardware/mechanical/cad](../hardware/mechanical/cad); J4 and J5 are not yet. Full working is in [engineering-calculations.md](engineering-calculations.md), from [joint_sizing.py](../hardware/mechanical/joint_sizing.py). Masses in it are estimates, so re-run it as parts are weighed.
+Status: chosen joint layout. The base, J1, J2, J3, J4 and gripper are modeled in [hardware/mechanical/cad](../hardware/mechanical/cad); J5 is not yet. Full working is in [engineering-calculations.md](engineering-calculations.md), from [joint_sizing.py](../hardware/mechanical/joint_sizing.py). Masses in it are estimates, so re-run it as parts are weighed.
 
 ## Size target
 
@@ -26,8 +26,8 @@ Ned2 figures are from Niryo's [spec sheet](https://niryo.com/wp-content/uploads/
 | Joint | Motion | Axis | Range | Motor | Reduction | Design torque | Available | Margin | Max speed |
 |---|---|---|---|---|---|---|---|---|---|
 | J1 | Base rotation | Z, vertical | 335° | 17HS19-1684S-PG5 | 5.18 x 8 = 41.4:1 | 0.9 N·m | 9.2 | 9.7 | 54°/s |
-| J2 | Shoulder | Y, sideways | 125° | 17HS19-1684S-PG14 | 13.73 x 5 = 68.7:1 | 5.7 N·m with spring | 15.2 | 2.6 (1.5 without) | 33°/s |
-| J3 | Elbow | Y, sideways | 160° | 17HS19-1684S-PG5 | 5.18 x 5 = 25.9:1 | 4.3 N·m | 5.7 | 1.3 | 87°/s |
+| J2 | Shoulder | Y, sideways | 125° | 17HS19-1684S-PG14 | 13.73 x 5 = 68.7:1 | 6.0 N·m with spring | 15.2 | 2.5 (1.4 without) | 33°/s |
+| J3 | Elbow | Y, sideways | 130° (-80 to +50) | 17HS19-1684S-PG5 | 5.18 x 5 = 25.9:1 | 4.4 N·m | 5.7 | 1.3 | 87°/s |
 | J4 | Wrist | Y, sideways | 220° | 17HS08-1004S at 1.0 A | Belts 3 x 5 = 15:1 | 1.17 N·m | 1.22 | 1.05 | 150°/s |
 | J5 | Wrist twist | X, along the hand | 290° | 11HS20-0674S | Belt 3:1 | 0.09 N·m | 0.18 | 2.1 | 750°/s |
 | J6 | Gripper | Open and close | 0-50 mm | MG996R servo | Rack and pinion | - | - | - | - |
@@ -41,7 +41,7 @@ J1 and J2 are two stacked hinges rather than a ball joint: J1 aims the arm left 
 - **J1:** the motor hangs from the deck inside the base, with a 20T pulley driving a 160T pulley printed on the turntable by a 360 mm, 15 mm belt. Two 6813 bearings on a fixed hub carry the turntable. See [the CAD](../hardware/mechanical/cad/base_j1.py).
 - **J2:** the motor sits behind the shoulder on the J2 housing, and a 280 mm, 15 mm belt drives a 100T printed pulley bolted to the arm root. The pulley sits outside the fork, with a small notch in the turntable so it clears. Two 6806 bearings sit in the housing towers. An extension spring from the housing to the arm root carries about 60% of the arm's own weight, and also slows the drop when the E-stop cuts power.
 - **J3:** the motor sits in a slim hump at the back of the upper arm, with its can outside the -Y wall, and its gearbox bolted to the internal rib. A 16T pulley drives an 80T printed pulley at the elbow by a 380 mm, 15 mm belt in the belt bay. 6804 bearings sit in the elbow cheeks. A gear-only elbow would put the motor at the elbow, adding about 0.6 kg for J2 to lift, and printed gear backlash of about 0.5° would move the tip about 4 mm.
-- **J4:** the motor rides at the rear of the forearm, with a 6 mm belt down to the wrist axle on 6802 bearings.
+- **J4:** the motor sits in a small hump on top of the forearm. A 160 mm, 6 mm belt drives a printed 60T and 16T compound pulley on two 625 bearings, then a 300 mm, 6 mm belt drives an 80T printed pulley at the wrist. Two 6802 bearings sit in the wrist fork. Motor and compound pulley slots set the belt tension.
 - **J5:** the NEMA 11 rides in the wrist beside the twist axis and drives the flange by a short belt, on 6803 bearings. This avoids mechanical coupling with J4.
 - **J6:** the MG996R sits in the gripper.
 
@@ -104,7 +104,7 @@ The casing is the structure: printed PETG clamshells, stiffened with metal where
 | Base | Tapered printed shell, 200 mm square at the table narrowing to 180 mm at the deck, with 32 mm corners, holding Pi, Mega, driver carrier, buck module and J1 motor. Rear panel for connectors, side vents, fan airflow across the drivers, E-stop on a tethered box |
 | Turntable | Thick printed housing on the J1 bearings, carrying the J2 motor and spring anchor |
 | Upper arm | Slim printed tunnel, 60 mm wide, with a screw-on lid. An internal rib separates the wire tunnel from the belt bay, and snap clips on the lid and rear wall hold a wire bundle up to 15 mm. No metal spine; stiffness needs testing |
-| Forearm | Clamshell around two 10 mm aluminium rods, tapering to a fork at J4 |
+| Forearm | Slim printed tunnel, 48 x 46 mm, with a lid underneath, a rib between wires and belts, wire clips, and a fork at J4. No metal spine; stiffness needs testing |
 | Wrist | Printed housing for the NEMA 11 |
 
 - Print load-bearing parts with 4+ walls and 40% infill, with layers running along the load path.

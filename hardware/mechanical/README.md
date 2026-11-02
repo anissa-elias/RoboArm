@@ -4,6 +4,7 @@ RoboArm body the size of a Niryo Ned2: J1 base, J2 shoulder, J3 elbow, J4 wrist,
 
 - [Mechanical design](../../docs/mechanical-design.md): joints, drivetrains, gripper and casing
 - [cad/j2_shoulder.py](cad/j2_shoulder.py): J2 housing, arm root and 100T pulley.
+- [cad/j4_forearm.py](cad/j4_forearm.py): slim forearm with wire tunnel, lid and clips, compound pulley, wrist pulley and wrist link.
 - [cad/j3_elbow.py](cad/j3_elbow.py): slim upper arm with wire tunnel, lid and clips, elbow stem and 80T pulley.
 - [cad/build_viewer.py](cad/build_viewer.py): builds the browser 3D model into `viewer/`.
 - [cad/gripper.py](cad/gripper.py): two-jaw gripper and tool flange. Print 2 racks and 2 fingers.

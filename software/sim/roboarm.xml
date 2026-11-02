@@ -67,7 +67,7 @@
         <geom class="visual" type="box" pos="0.03 0 0.05" size="0.021 0.021 0.04" material="dark" mass="0.6"/>
 
         <body name="j3_forearm" pos="0 0 0.221">
-          <joint name="j3" axis="0 1 0" range="-80 80" armature="0.0046" damping="0.2" frictionloss="0.05"/>
+          <joint name="j3" axis="0 1 0" range="-80 50" armature="0.0046" damping="0.2" frictionloss="0.05"/>
           <geom class="visual" type="cylinder" fromto="0 -0.042 0 0 0.042 0" size="0.03" material="blue" mass="0.3"/>
           <geom name="forearm" class="link" type="capsule" fromto="0.02 0 0 0.19 0 0" size="0.026" material="white" mass="0.3"/>
           <geom class="visual" type="box" pos="0.04 0 0.034" size="0.021 0.021 0.012" material="dark" mass="0.15"/>

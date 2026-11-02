@@ -47,9 +47,9 @@ Available torque = holding torque x (run current / rated current) x 0.6 usable x
 | Joint | Static (N·m) | Design (N·m) | Ratio | Available (N·m) | Margin |
 |---|---|---|---|---|---|
 | J1 | 0.63 | 0.94 | 41.4 | 9.16 | 9.7 |
-| J2, with 60% spring | 3.94 | 5.91 | 68.7 | 15.17 | 2.6 |
-| J2, no spring | 7.19 | 10.79 | 68.7 | 15.17 | 1.4 |
-| J3 | 2.84 | 4.27 | 25.9 | 5.72 | 1.3 |
+| J2, with 60% spring | 3.97 | 5.95 | 68.7 | 15.17 | 2.5 |
+| J2, no spring | 7.27 | 10.90 | 68.7 | 15.17 | 1.4 |
+| J3 | 2.92 | 4.38 | 25.9 | 5.72 | 1.3 |
 | J4 | 0.78 | 1.17 | 15.0 | 1.22 | 1.05 |
 | J5 | 0.06 | 0.09 | 3.0 | 0.18 | 2.1 |
 
@@ -65,7 +65,7 @@ Maximum speed = 10,000 steps/s / (200 x 8 x ratio) x 360.
 |---|---|---|
 | J1 | 54 | 45 |
 | J2 | 33 | 30 |
-| J3 | 87 | 45 |
+| J3 | 172 | 0.88 |
 | J4 | 150 | 90 |
 | J5 | 750 | 90 |
 
@@ -74,9 +74,9 @@ Maximum speed = 10,000 steps/s / (200 x 8 x ratio) x 360.
 | Joint | Belt tension (N) | Gearbox output (N·m) |
 |---|---|---|
 | J1 | 19 | 0.12 |
-| J2, with spring | 186 | 1.18 |
-| J2, no spring | 7.19 | 10.79 | 68.7 | 15.17 | 1.4 |
-| J3 | 168 | 0.85 |
+| J2, with spring | 187 | 1.19 |
+| J2, no spring | 7.27 | 10.90 | 68.7 | 15.17 | 1.4 |
+| J3 | 172 | 0.88 |
 
 ## Position resolution
 

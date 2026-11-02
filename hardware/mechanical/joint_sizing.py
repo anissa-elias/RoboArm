@@ -43,7 +43,7 @@ def loads():
     t5 = G * pay * 0.02                  # Ned2 rates payload at 20 mm offset
     t3 = G * (pay * (L3 + WRIST + TCP) + M['gripper'] * (L3 + WRIST + GRIP_CG)
               + wrist_mass * (L3 + 0.01) + M['forearm'] * L3 * 0.55
-              + M['j4_motor'] * 0.04 + M['elbow'] * 0.01)
+              + M['j4_motor'] * 0.09 + M['elbow'] * 0.01)
     past_elbow = (pay + M['gripper'] + wrist_mass + M['forearm'] + M['j4_motor'] + M['elbow'])
     # J3 motor sits on the upper arm 85 mm from the shoulder.
     t2_total = t3 + G * (past_elbow * L2 + M['upper'] * L2 * 0.5 + M['j3_motor'] * 0.085)

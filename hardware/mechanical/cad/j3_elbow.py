@@ -177,6 +177,8 @@ def elbow_stem():
     body -= window
     body -= box(-30, 8, hy0 - 1, hy1 + 1, Z_E - 40, Z_E - 15) ^ ycyl(hy0 - 1, hy1 + 1, 40, 0, Z_E)  # bundle enters from below
     body -= ycyl(-HEAD_Y + 1, -HEAD_Y + 2 + 2.5, 3.1, 0, Z_E)                    # magnet
+    for x in (44.0, 54.0):                                                       # M3 bolts into the forearm spigot
+        body -= Manifold.cylinder(60, 1.7, 1.7, 32).translate((x, (hy0 + hy1) / 2, Z_E - 30))
     for i in range(3):
         t = math.radians(30 + 120 * i)
         body -= ycyl(hy1 - 10, hy1 + 1, 1.5, 19 * math.cos(t), Z_E + 19 * math.sin(t))
@@ -248,9 +250,9 @@ def main():
     check('upper arm', arm, 'pulley', p)
     check('lid', l, 'motor', motor)
     check('stem', s, 'pulley', p)
-    print('J3 travel, -80 to +80 deg:')
+    print('J3 travel, -80 to +50 deg:')
     worst = {}
-    for d in range(-80, 81, 10):
+    for d in range(-80, 51, 10):
         moved = bend(s + p, d)
         for n, m in (('upper arm', arm), ('lid', l), ('motor', motor)):
             worst[n] = max(worst.get(n, 0), (moved ^ m).volume())
