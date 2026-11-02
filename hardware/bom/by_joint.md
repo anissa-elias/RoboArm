@@ -10,8 +10,8 @@ Parts still to buy, split by where they are used. Totals match [bom.csv](bom.csv
 | J4 wrist | $41.60 |
 | J5 wrist twist | $37.60 |
 | J6 gripper | $48.99 |
-| Shared | $173.48 |
-| **Total** | **$533.47** |
+| Shared | $175.48 |
+| **Total** | **$535.47** |
 
 Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pack. The pack is bought once. Each also lists one AS5600 encoder at $3.00, its share of the $15 10-pack, which leaves 5 spares.
 
@@ -110,10 +110,11 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 | Electrolytic capacitor kit | $12.00 |
 | Ceramic capacitor kit | $10.00 |
 | Resistor kit | $10.00 |
-| Prototype boards | $12.00 |
+| Perfboard, 7 x 9 cm | $8.00 |
+| 2-pin screw terminals | $6.00 |
 | Female headers | $8.00 |
 | 40 mm fans, 2-pack | $9.00 |
-| **Total** | **$61.00** |
+| **Total** | **$63.00** |
 
 ### Structure and assembly
 
