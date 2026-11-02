@@ -83,7 +83,8 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | J2 | 6806 thin bearing, 30x42x7 mm | 2 | 2 | $8.00 | rough |
 | J3 | 6804 thin bearing, 20x32x7 mm | 2 | 2 | $8.00 | rough |
 | J4 | 6802 bearing, 15x24x5 mm | 2 | 2 | $6.00 | rough |
-| J2-J3 | GT2 closed belts, 15 mm wide, lengths from CAD | 2 | 2 | $20.00 | rough |
+| J2 | GT2 closed belt, 280 mm long, 15 mm wide (280-2GT-15) | 1 | 1 | $10.00 | rough |
+| J3 | GT2 closed belt, 15 mm wide, length from CAD | 1 | 1 | $10.00 | rough |
 | J4-J5 | GT2 closed belts, 6 mm wide, lengths from CAD | 3 | 3 | $12.00 | rough |
 | J2 | GT2 20-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |
 | J3 | GT2 20-tooth pulley, 8 mm bore, for 15 mm belt | 1 | 1 | $8.00 | rough |

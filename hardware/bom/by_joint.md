@@ -33,7 +33,7 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 |---|---|---|
 | 17HS19-1684S-PG14 motor | 1 | $35.00 |
 | 6806 bearing, 30 x 42 x 7 mm | 2 | $8.00 |
-| GT2 belt, 15 mm wide, length from CAD | 1 | $10.00 |
+| GT2 belt, 280 mm, 15 mm wide | 1 | $10.00 |
 | Extension springs | 1 | $12.00 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |

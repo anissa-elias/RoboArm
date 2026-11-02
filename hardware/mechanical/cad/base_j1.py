@@ -232,6 +232,8 @@ def rotor():
     body -= cyl(MAG_H, MAG_D / 2, Z_PAD_TOP + 2.2 - 0.01)
     q = J2_BOLT_SQ / 2
     body -= merge([cyl(PLATE_T + 1, 2.8, Z_PLATE + 0.5, sx * q, sy * q) for sx in (-1, 1) for sy in (-1, 1)])
+    # Notch so the J2 pulley, which sits outside the fork, clears the plate.
+    body -= box(-18, 18, 43.5, ROTOR_R + 1, Z_ROTOR_TOP - 3.5, Z_ROTOR_TOP + 1)
     return body
 
 
