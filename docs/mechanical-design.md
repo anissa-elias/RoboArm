@@ -111,7 +111,21 @@ The casing is the structure: printed PETG clamshells, stiffened with metal where
 - Use heat-set inserts wherever screws will be removed more than once.
 - Keep belts covered: they are pinch points.
 - The 24 V supply stays outside the base, so there is no mains voltage inside the arm.
-- The arm must be clamped or bolted to the table. The base is too light to resist tipping at full reach.
+- The base bolts down to a separate 250 x 210 x 8 mm mounting plate with four M6 bolts, and the plate is what gets clamped or bolted to the table. It has clamp ears at both ends and fits a 256 mm bed. The plate adds 8 mm to all table heights.
+- The arm must always be clamped. The base and plate are too light to resist tipping at full reach.
+
+## Joint colours
+
+Each joint has one colour in every drawing and in the 3D model. Printing these parts in matching filament is optional.
+
+| Joint | Colour |
+|---|---|
+| J1 base rotation | Blue |
+| J2 shoulder | Green |
+| J3 elbow | Orange |
+| J4 wrist | Purple |
+| J5 wrist twist | Pink |
+| J6 gripper | Yellow |
 
 ## Risks
 

@@ -4,10 +4,10 @@ Complete build list for the arm in [docs/mechanical-design.md](../../docs/mechan
 
 | Phase | Cost |
 |---|---|
-| Phase 1: base, J1, gripper and electronics test | $325 |
+| Phase 1: base, J1, gripper and electronics test | $330 |
 | Phase 2: the rest of the electronics and motors | $103 |
 | Phase 3: mechanical for the arm | $112 |
-| **Total, before tax and shipping** | **about $540** |
+| **Total, before tax and shipping** | **about $545** |
 
 Totals leave out parts already owned (marked Owned, about $321). Confirm the Raspberry Pi is a Pi 5 and that the 24 V supply can deliver 5 A.
 
@@ -51,12 +51,13 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | - | M3/M4/M5 screw, nut and washer assortment | 1 | 1 | $30.00 | rough |
 | - | M3/M4 brass heat-set inserts | 1 | 1 | $12.00 | rough |
 | Base | C-clamps or table bolts, set of 2 | 1 | 1 x 2-pack | $12.00 | rough |
+| Base | M6 x 25 mm bolts and nuts, 4 each (base to mounting plate) | 1 | 1 | $5.00 | rough |
 | - | PETG filament, 1 kg rolls | 2 | Owned | $40.00 | rough |
 | M7 | [MG996R servo, 4-pack (J6 gripper)](https://www.amazon.com/MG996R-Copper-Digital-Helicopter-Control/dp/B0DK1V5ZSM) | 1 | 1 x 4-pack | $22.99 | checked |
 | U6 | [XL4015 5 A buck module, 3-pack (set to 6.0 V)](https://www.amazon.com/HiLetgo-1-25-36V-Converter-Adjustable-Step-down/dp/B00LOG4XC0) | 1 | 1 x 3-pack | $9.49 | checked |
 | Gripper | TPU filament or rubber pads for jaws | 1 | 1 | $10.00 | rough |
 | Gripper | 4 mm steel rod, 110 mm (gripper guides) | 2 | 1 x 2-pack | $6.00 | rough |
-| | **Subtotal to buy** | | | **$325.47** | |
+| | **Subtotal to buy** | | | **$330.47** | |
 
 ## Phase 2: the rest of the electronics and motors (buy after J1 works)
 
@@ -96,4 +97,4 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | Forearm | 10 mm aluminium rod, 200 mm | 2 | 1 x 2-pack | $10.00 | rough |
 | | **Subtotal to buy** | | | **$112.00** | |
 
-Tools are not included: soldering iron, multimeter, 3D printer with a bed of at least 220 mm, hex keys.
+Tools are not included: soldering iron, multimeter, 3D printer with a bed of at least 256 mm, hex keys.

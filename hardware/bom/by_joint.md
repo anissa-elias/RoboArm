@@ -10,8 +10,8 @@ Parts still to buy, split by where they are used. Totals match [bom.csv](bom.csv
 | J4 wrist | $43.60 |
 | J5 wrist twist | $37.60 |
 | J6 gripper | $48.99 |
-| Shared | $178.48 |
-| **Total** | **$540.47** |
+| Shared | $183.48 |
+| **Total** | **$545.47** |
 
 Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pack. The pack is bought once. Each also lists one AS5600 encoder at $3.00, its share of the $15 10-pack, which leaves 5 spares.
 
@@ -122,4 +122,5 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 | Screws, nuts and washers | $30.00 |
 | Heat-set inserts | $12.00 |
 | Table clamps or bolts | $12.00 |
-| **Total** | **$64.00** |
+| M6 bolts and nuts, 4 each (base to mounting plate) | $5.00 |
+| **Total** | **$69.00** |
