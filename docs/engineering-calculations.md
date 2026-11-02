@@ -32,26 +32,26 @@ A full pose needs 6. The missing one is tool yaw, so the tool always points in t
 
 ## Joint torque
 
-Worst pose: arm stretched out level, with the payload 110 mm past the flange. Reach is 491 mm to the flange and 601 mm to the payload point.
+Worst pose: arm stretched out level, with the payload 110 mm past the flange. Reach is 504 mm to the tool flange and 614 mm to the payload point.
 
 Static torque comes from each mass times its horizontal distance from the joint, times 9.81. For J4:
 
-T = 9.81 x (0.30 x 0.165 + 0.20 x 0.105 + 0.30 x 0.03) = 0.78 N·m
+T = 9.81 x (0.30 x 0.1785 + 0.20 x 0.1185 + 0.23 x 0.03) = 0.83 N·m
 
 Design torque = 1.5 x static, to cover acceleration and friction.
 
 Available torque = holding torque x (run current / rated current) x 0.6 usable x ratio x 0.85 efficiency. For J4:
 
-0.16 x 1.0 x 0.6 x 15 x 0.85 = 1.22 N·m
+0.16 x 1.0 x 0.6 x 18.75 x 0.85 = 1.53 N·m
 
 | Joint | Static (N·m) | Design (N·m) | Ratio | Available (N·m) | Margin |
 |---|---|---|---|---|---|
-| J1 | 0.63 | 0.94 | 41.4 | 9.16 | 9.7 |
-| J2, with 60% spring | 3.97 | 5.95 | 68.7 | 15.17 | 2.5 |
-| J2, no spring | 7.27 | 10.90 | 68.7 | 15.17 | 1.4 |
-| J3 | 2.92 | 4.38 | 25.9 | 5.72 | 1.3 |
-| J4 | 0.78 | 1.17 | 15.0 | 1.22 | 1.05 |
-| J5 | 0.06 | 0.09 | 3.0 | 0.18 | 2.1 |
+| J1 | 0.62 | 0.94 | 41.4 | 9.16 | 9.79 |
+| J2, with 60% spring | 3.90 | 5.84 | 68.7 | 15.17 | 2.60 |
+| J2, no spring | 7.03 | 10.54 | 68.7 | 15.17 | 1.44 |
+| J3 | 2.83 | 4.24 | 25.9 | 5.72 | 1.35 |
+| J4 | 0.83 | 1.24 | 18.8 | 1.53 | 1.24 |
+| J5 | 0.06 | 0.09 | 4.0 | 0.12 | 1.39 |
 
 J1 turns on a vertical axis, so gravity does not load it. Its torque comes from inertia: 0.29 kg·m² at 60°/s², plus 0.33 N·m of bearing friction (assumed).
 
@@ -66,8 +66,8 @@ Maximum speed = 10,000 steps/s / (200 x 8 x ratio) x 360.
 | J1 | 54 | 45 |
 | J2 | 33 | 30 |
 | J3 | 172 | 0.88 |
-| J4 | 150 | 90 |
-| J5 | 750 | 90 |
+| J4 | 120 | 90 |
+| J5 | 562 | 90 |
 
 ## Drive loads
 
@@ -75,7 +75,7 @@ Maximum speed = 10,000 steps/s / (200 x 8 x ratio) x 360.
 |---|---|---|
 | J1 | 19 | 0.12 |
 | J2, with spring | 187 | 1.19 |
-| J2, no spring | 7.27 | 10.90 | 68.7 | 15.17 | 1.4 |
+| J2, no spring | 7.03 | 10.54 | 68.7 | 15.17 | 1.44 |
 | J3 | 172 | 0.88 |
 
 ## Position resolution
@@ -85,14 +85,14 @@ Maximum speed = 10,000 steps/s / (200 x 8 x ratio) x 360.
 | J1 | 0.0054 | 0.047 |
 | J2 | 0.0033 | 0.028 |
 | J3 | 0.0087 | 0.041 |
-| J4 | 0.0150 | 0.014 |
-| J5 | 0.0750 | 0.039 |
+| J4 | 0.0120 | 0.014 |
+| J5 | 0.0563 | 0.029 |
 
 This is commanded resolution, not accuracy. Backlash, belt stretch and flex will dominate. One count of the Mega's 10-bit ADC reading an AS5600 is 0.35°, about 3 mm at the tip.
 
 ## Base tipping
 
-With the arm fully out, 2.60 kg sits 284 mm from the axis, which is 4.70 N·m about the base edge. A 1.9 kg base gives 1.86 N·m against it, a ratio of 0.40.
+With the arm fully out, 2.53 kg sits 283 mm from the axis, which is 4.53 N·m about the base edge. A 1.9 kg base gives 1.86 N·m against it, a ratio of 0.41.
 
 **The base tips over unless it is clamped or bolted down.** It is not safe to run free-standing. The mounting plate adds about 0.3 kg, which does not change this, so clamp the plate to the table.
 

@@ -4,7 +4,7 @@ An open, low-cost robotic arm with five moving joints and a swappable gripper bu
 
 RoboArm aims for the feature set of an educational desktop arm such as the Niryo Ned2 (onboard computer running ROS 2, joint encoders, collision detection, emergency stop) at a fraction of the cost.
 
-> Status: early design. The electronics schematic and bill of materials are complete and checked. A Ned2-sized mechanical design is in [docs/mechanical-design.md](docs/mechanical-design.md). CAD and ROS 2 software are not started yet.
+> Status: early design. The electronics schematic and bill of materials are complete and checked. The full Ned2-sized arm is modeled, with printable files in [hardware/mechanical/print/](hardware/mechanical/print/). The design is in [docs/mechanical-design.md](docs/mechanical-design.md). CAD and ROS 2 software are not started yet.
 
 ## Features (planned)
 

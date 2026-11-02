@@ -30,12 +30,12 @@ static const uint8_t TMC_ADDR[NUM_JOINTS] = {0, 1, 2, 0, 1};
 // Ratios and limits match docs/mechanical-design.md.
 static const uint16_t MOTOR_STEPS = 200;   // 1.8 deg steppers
 static const uint16_t MICROSTEPS = 8;
-static const float GEAR_RATIO[NUM_JOINTS]   = {41.44, 68.65, 25.9, 15.0, 3.0};
+static const float GEAR_RATIO[NUM_JOINTS]   = {41.44, 68.65, 25.9, 18.75, 4.0};
 static const int8_t   DIR_SIGN[NUM_JOINTS]  = {1, 1, 1, 1, 1};
 static const int8_t   ENC_SIGN[NUM_JOINTS]  = {1, 1, 1, 1, 1};
-static const float LIMIT_MIN[NUM_JOINTS]    = {-167, -35, -80, -110, -145};
+static const float LIMIT_MIN[NUM_JOINTS]    = {-167, -35, -80, -50, -145};
 static const float LIMIT_MAX[NUM_JOINTS]    = { 167,  90,  50,  110,  145};
-// Motor RMS current (mA): 17HS19-1684S on J1-J3, 17HS08-1004S on J4, 11HS20-0674S on J5
+// Motor RMS current (mA): 17HS19-1684S on J1-J3, 17HS08-1004S on J4, 11HS12-0674S on J5
 static const uint16_t RMS_MA[NUM_JOINTS]    = {1400, 1400, 1400, 1000, 670};
 static const float R_SENSE = 0.11f;        // BIGTREETECH TMC2209 V1.3 sense resistor
 
