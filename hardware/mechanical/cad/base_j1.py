@@ -81,7 +81,7 @@ MAG_D, MAG_H = 6.2, 2.5
 PAD = 24.0
 Z_PAD_TOP = Z_PLATE - 4.2
 
-PLATE_X, PLATE_Y, PLATE_T = 250.0, 210.0, 8.0   # mounting plate, clamp ears on the +X and -X ends
+MOUNT_X, MOUNT_Y, MOUNT_T = 250.0, 210.0, 8.0   # mounting plate, clamp ears on the +X and -X ends
 TABLE_BOLTS = ((-85, 0), (85, 0), (0, 85), (0, -85))
 
 STOP_R, STOP_ANGLE = 57.0, 225.0  # deck block opposite the motor
@@ -160,18 +160,18 @@ def mount_plate():
     """Flat plate under the base. The base bolts to it, and it is what gets clamped to the table.
 
     Fits a 256 mm bed. M6 bolts drop through the base floor into nuts in the underside.
-    Sits below z = 0, so the table is at z = -PLATE_T.
+    Sits below z = 0, so the table is at z = -MOUNT_T.
     """
-    half_x, half_y = PLATE_X / 2 - 12, PLATE_Y / 2 - 12
-    plate = Manifold.batch_hull([cyl(PLATE_T, 12, -PLATE_T, sx * half_x, sy * half_y) for sx in (-1, 1) for sy in (-1, 1)])
+    half_x, half_y = MOUNT_X / 2 - 12, MOUNT_Y / 2 - 12
+    plate = Manifold.batch_hull([cyl(MOUNT_T, 12, -MOUNT_T, sx * half_x, sy * half_y) for sx in (-1, 1) for sy in (-1, 1)])
     lip = tapered(BASE + 6.6, BASE + 6.6, BASE_R + 3.3, 2.0) - tapered(BASE + 0.6, BASE + 0.6, BASE_R + 0.3, 3.0, -0.5)
     body = plate + lip
     for x, y in TABLE_BOLTS:
-        body -= cyl(PLATE_T + 2, 3.3, -PLATE_T - 1, x, y)
-        body -= Manifold.cylinder(5, 6.0, 6.0, 6).translate((x, y, -PLATE_T - 0.01))   # M6 nut pocket
+        body -= cyl(MOUNT_T + 2, 3.3, -MOUNT_T - 1, x, y)
+        body -= Manifold.cylinder(5, 6.0, 6.0, 6).translate((x, y, -MOUNT_T - 0.01))   # M6 nut pocket
     for sx in (-1, 1):                                                                 # bolt-down slots in the clamp ears
         for sy in (-1, 1):
-            body -= Manifold.batch_hull([cyl(PLATE_T + 2, 3.4, -PLATE_T - 1, sx * (half_x - 3), sy * (half_y - 16 + e)) for e in (-8, 8)])
+            body -= Manifold.batch_hull([cyl(MOUNT_T + 2, 3.4, -MOUNT_T - 1, sx * (half_x - 3), sy * (half_y - 16 + e)) for e in (-8, 8)])
     return body
 
 
