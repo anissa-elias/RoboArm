@@ -28,10 +28,11 @@ button{height:42px;font:inherit;font-weight:600;background:#fff;border:1px solid
 <div id="view"><p id="msg">The 3D model needs internet access to load its viewer library.</p></div>
 <aside>
 <h1>RoboArm</h1>
-<p>Drag to rotate, scroll to zoom. Each joint has its own colour. The forearm and wrist are placeholders until J4 and J5 are modeled.</p>
+<p>Drag to rotate, scroll to zoom. Each joint has its own colour. The wrist twist is a placeholder until J5 is modeled.</p>
 <div><label for="j1">J1 base: <b id="a1">0</b>°</label><input id="j1" type="range" min="-167" max="167" value="0"></div>
 <div><label for="j2">J2 shoulder: <b id="a2">0</b>°</label><input id="j2" type="range" min="-35" max="90" value="15"></div>
-<div><label for="j3">J3 elbow: <b id="a3">0</b>°</label><input id="j3" type="range" min="-80" max="80" value="0"></div>
+<div><label for="j3">J3 elbow: <b id="a3">0</b>°</label><input id="j3" type="range" min="-80" max="50" value="0"></div>
+<div><label for="j4">J4 wrist: <b id="a4">0</b>°</label><input id="j4" type="range" min="-110" max="110" value="0"></div>
 <div class="row"><button id="lid">Open tunnel</button><button id="home">Home</button></div>
 <div id="list"></div>
 </aside>
@@ -66,16 +67,16 @@ for(const p of DATA){
  c.type='checkbox';c.checked=true;p.box=c;c.onchange=()=>{m.visible=c.checked;draw()};s.className='sw';s.style.background=p.color;
  t.textContent=p.name+(p.kind==='buy'?' (buy)':p.kind==='placeholder'?' (placeholder)':'');l.append(c,s,t);let at=head;while(at.nextElementSibling&&at.nextElementSibling.tagName==='LABEL')at=at.nextElementSibling;at.after(l);
 }
-const $=i=>document.getElementById(i),j1=$('j1'),j2=$('j2'),j3=$('j3');
+const $=i=>document.getElementById(i),j1=$('j1'),j2=$('j2'),j3=$('j3'),j4=$('j4');
 const about=(z,rad)=>new THREE.Matrix4().makeTranslation(0,0,z).multiply(new THREE.Matrix4().makeRotationY(rad)).multiply(new THREE.Matrix4().makeTranslation(0,0,-z));
-function pose(){const r=d=>d*Math.PI/180,J1=new THREE.Matrix4().makeRotationZ(r(+j1.value)),J2=about(166,r(+j2.value)),J3=about(387,r(+j3.value));
- $('a1').textContent=j1.value;$('a2').textContent=j2.value;$('a3').textContent=j3.value;
- for(const m of meshes){const s=m.userData.stage,M=new THREE.Matrix4();if(s>=1)M.multiply(J1);if(s>=2)M.multiply(J2);if(s>=3)M.multiply(J3);m.matrix.copy(M);m.matrixWorldNeedsUpdate=true}draw()}
+function pose(){const r=d=>d*Math.PI/180,J1=new THREE.Matrix4().makeRotationZ(r(+j1.value)),J2=about(166,r(+j2.value)),J3=about(387,r(+j3.value)),J4=new THREE.Matrix4().makeTranslation(215,0,387).multiply(new THREE.Matrix4().makeRotationY(r(+j4.value))).multiply(new THREE.Matrix4().makeTranslation(-215,0,-387));
+ $('a1').textContent=j1.value;$('a2').textContent=j2.value;$('a3').textContent=j3.value;$('a4').textContent=j4.value;
+ for(const m of meshes){const s=m.userData.stage,M=new THREE.Matrix4();if(s>=1)M.multiply(J1);if(s>=2)M.multiply(J2);if(s>=3)M.multiply(J3);if(s>=4)M.multiply(J4);m.matrix.copy(M);m.matrixWorldNeedsUpdate=true}draw()}
 function size(){const w=view.clientWidth,h=view.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();draw()}
 function draw(){renderer.render(scene,cam)}
-ctl.addEventListener('change',draw);[j1,j2,j3].forEach(i=>i.oninput=pose);addEventListener('resize',size);
-$('home').onclick=()=>{j1.value=0;j2.value=15;j3.value=0;pose()};
-$('lid').onclick=()=>{const m=byName['Tunnel lid'];m.visible=!m.visible;m.userData.box.checked=m.visible;$('lid').textContent=m.visible?'Open tunnel':'Close tunnel';draw()};
+ctl.addEventListener('change',draw);[j1,j2,j3,j4].forEach(i=>i.oninput=pose);addEventListener('resize',size);
+$('home').onclick=()=>{j1.value=0;j2.value=15;j3.value=0;j4.value=0;pose()};
+$('lid').onclick=()=>{const v=!byName['Tunnel lid'].visible;for(const n of ['Tunnel lid','Forearm lid']){const m=byName[n];m.visible=v;m.userData.box.checked=v}$('lid').textContent=v?'Open tunnel':'Close tunnel';draw()};
 size();pose();
 }catch(e){document.getElementById('msg').style.display='block'}
 </script>

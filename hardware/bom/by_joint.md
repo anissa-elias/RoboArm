@@ -7,11 +7,11 @@ Parts still to buy, split by where they are used. Totals match [bom.csv](bom.csv
 | J1 base | $79.60 |
 | J2 shoulder | $82.60 |
 | J3 elbow | $69.60 |
-| J4 wrist | $43.60 |
+| J4 wrist | $41.60 |
 | J5 wrist twist | $37.60 |
 | J6 gripper | $48.99 |
-| Shared | $183.48 |
-| **Total** | **$545.47** |
+| Shared | $173.48 |
+| **Total** | **$533.47** |
 
 Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pack. The pack is bought once. Each also lists one AS5600 encoder at $3.00, its share of the $15 10-pack, which leaves 5 spares.
 
@@ -59,12 +59,13 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 |---|---|---|
 | 17HS08-1004S motor | 1 | $11.00 |
 | 6802 bearing, 15 x 24 x 5 mm | 2 | $6.00 |
-| GT2 belts, 6 mm wide, length from CAD | 2 | $8.00 |
+| GT2 belt, 160 mm, 6 mm wide | 1 | $4.00 |
+| GT2 belt, 300 mm, 6 mm wide | 1 | $4.00 |
+| GT2 20-tooth pulley, 5 mm bore | 1 | $3.50 |
+| 625 bearings and M5 bolt (compound pulley) | 2 | $3.50 |
 | TMC2209 driver (from 5-pack) | 1 | $6.60 |
 | AS5600 encoder (from 10-pack) | 1 | $3.00 |
-| GT2 small pulleys, 5 mm bore, 20T and 16T | 2 | $7.00 |
-| GT2 idler for 6 mm belt | 1 | $2.00 |
-| **Total** | | **$43.60** |
+| **Total** | | **$41.60** |
 
 ## J5 wrist twist
 
@@ -118,9 +119,8 @@ Each stepper joint lists one TMC2209 driver at $6.60, its share of the $33 5-pac
 
 | Part | Price |
 |---|---|
-| 10 mm aluminium rod x 2 (forearm) | $10.00 |
 | Screws, nuts and washers | $30.00 |
 | Heat-set inserts | $12.00 |
 | Table clamps or bolts | $12.00 |
 | M6 bolts and nuts, 4 each (base to mounting plate) | $5.00 |
-| **Total** | **$69.00** |
+| **Total** | **$59.00** |

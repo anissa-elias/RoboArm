@@ -28,7 +28,7 @@ HOME = [0, 15, 0, 0, 0, 50]            # degrees, gripper opening in mm
 JOINTS = [
     ('J1 base', -167, 167, '°'),
     ('J2 shoulder', -35, 90, '°'),
-    ('J3 elbow', -80, 80, '°'),
+    ('J3 elbow', -80, 50, '°'),
     ('J4 wrist', -110, 110, '°'),
     ('J5 twist', -145, 145, '°'),
     ('J6 gripper', 0, 50, ' mm'),

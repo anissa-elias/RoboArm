@@ -14,6 +14,7 @@ import base_j1 as b
 import gripper as g
 import j2_shoulder as j2
 import j3_elbow as j3
+import j4_forearm as j4
 
 OUT = Path(__file__).resolve().parent.parent / 'viewer'
 PAGE = Path(__file__).with_name('viewer_template.html')
@@ -29,14 +30,11 @@ def tool(m):
 
 
 def placeholders():
-    forearm = Manifold.cylinder(155, 25, 22, 64).rotate((0, 90, 0)).translate((60, -11, j3.Z_E))
-    j4_ring = Manifold.cylinder(60, 22, 22, 64).rotate((90, 0, 0)).translate((215, 30, j3.Z_E))
-    j5_ring = Manifold.cylinder(24, 22, 22, 64).rotate((0, 90, 0)).translate((246, 0, j3.Z_E))
-    return forearm, j4_ring, j5_ring
+    return Manifold.cylinder(19, 21, 21, 64).rotate((0, 90, 0)).translate((251, 0, j3.Z_E))
 
 
 def main():
-    forearm, j4_ring, j5_ring = placeholders()
+    j5_ring = placeholders()
     z_f = g.Z_GEAR + g.GEAR_T + 9
     fingers = g.finger().translate((4.2 + 15, 0, z_f)) + g.finger().rotate((0, 0, 180)).translate((-4.2 - 15, 0, z_f))
     # name, mesh, colour, stage (0 base, 1 J1, 2 J2, 3 J3), kind
@@ -59,12 +57,16 @@ def main():
         ('Motor', j3.dummy_j3_motor(), dark, 2, 'buy', 'J3'),
         ('Elbow stem', j3.elbow_stem(), JOINTS['J3'], 3, 'printed', 'J3'),
         ('Elbow pulley', j3.elbow_pulley(), JOINTS['J3'], 3, 'printed', 'J3'),
-        ('Forearm', forearm, '#EEF2F6', 3, 'placeholder', 'Arm'),
-        ('Wrist hinge', j4_ring, JOINTS['J4'], 3, 'placeholder', 'J4'),
-        ('Wrist twist', j5_ring, JOINTS['J5'], 3, 'placeholder', 'J5'),
-        ('Gripper body', tool(g.body()), JOINTS['J6'], 3, 'printed', 'J6'),
-        ('Gripper racks', tool(g.rack(1).translate((15, 0, 0)) + g.rack(-1).translate((-15, 0, 0))), JOINTS['J6'], 3, 'printed', 'J6'),
-        ('Gripper fingers', tool(fingers), dark, 3, 'printed', 'J6'),
+        ('Forearm', j4.forearm(), '#EEF2F6', 3, 'printed', 'Arm'),
+        ('Forearm lid', j4.forearm_lid(), '#DDE4EA', 3, 'printed', 'Arm'),
+        ('Motor', j4.dummy_motor(), dark, 3, 'buy', 'J4'),
+        ('Compound pulley', j4.compound_pulley(), JOINTS['J4'], 3, 'printed', 'J4'),
+        ('Wrist pulley', j4.wrist_pulley(), JOINTS['J4'], 4, 'printed', 'J4'),
+        ('Wrist link', j4.wrist_link(), JOINTS['J4'], 4, 'printed', 'J4'),
+        ('Wrist twist', j5_ring, JOINTS['J5'], 4, 'placeholder', 'J5'),
+        ('Gripper body', tool(g.body()), JOINTS['J6'], 4, 'printed', 'J6'),
+        ('Gripper racks', tool(g.rack(1).translate((15, 0, 0)) + g.rack(-1).translate((-15, 0, 0))), JOINTS['J6'], 4, 'printed', 'J6'),
+        ('Gripper fingers', tool(fingers), dark, 4, 'printed', 'J6'),
     ]
     data = []
     for name, m, colour, stage, kind, group in parts:

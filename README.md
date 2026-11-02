@@ -47,7 +47,7 @@ Details: [docs/architecture.md](docs/architecture.md).
 
 ## Cost
 
-Complete arm: about **$545** left to buy before tax and shipping, not counting about $321 of parts already owned. Most of this is still a rough estimate; see [hardware/bom/](hardware/bom/).
+Complete arm: about **$533** left to buy before tax and shipping, not counting about $321 of parts already owned. Most of this is still a rough estimate; see [hardware/bom/](hardware/bom/).
 
 ## Roadmap
 
