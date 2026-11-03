@@ -262,9 +262,9 @@ for vp in ('D5V1', 'D5V2'):
 # ---------------------------------------------------------------- drivers + motors
 DRV_X, MOT_X = 469.9, 571.5
 joint = ['Base', 'Shoulder', 'Elbow', 'Wrist', 'Wrist twist']
-MOTOR_PART = ['17HS19-1684S-PG5', '17HS19-1684S-PG14', '17HS19-1684S-PG5', '17HS08-1004S', '11HS20-0674S']
+MOTOR_PART = ['17HS19-1684S-PG5', '17HS19-1684S-PG14', '17HS19-1684S-PG5', '17HS08-1004S', '11HS12-0674S']
 MOTOR_NOTE = ['0.52 Nm 1.68 A + 5.18:1, set 1.4 A RMS', '0.52 Nm 1.68 A + 13.73:1, set 1.4 A RMS', '0.52 Nm 1.68 A + 5.18:1, set 1.4 A RMS',
-              '0.16 Nm 1 A, set 1.0 A RMS', '0.12 Nm 0.67 A, set 0.67 A RMS']
+              '0.16 Nm 1 A, set 1.0 A RMS', '0.06 Nm 0.67 A, set 0.67 A RMS']
 chan = iter([g(330.2 + k * 2.54) for k in range(40)])
 drivers, motors = [], []
 for i in range(5):
@@ -448,7 +448,7 @@ BOM_ROWS = [
     ('M1, M3', '2', 'STEPPERONLINE 17HS19-1684S-PG5', 'J1, J3', ''),
     ('M2', '1', 'STEPPERONLINE 17HS19-1684S-PG14', 'J2', ''),
     ('M4', '1', 'STEPPERONLINE 17HS08-1004S', 'J4', ''),
-    ('M5', '1', 'STEPPERONLINE 11HS20-0674S', 'J5', ''),
+    ('M5', '1', 'STEPPERONLINE 11HS12-0674S', 'J5', ''),
     ('M7', '1', 'MG996R servo', 'J6 gripper tool', ''),
     ('J6', '1', 'GX12 6-pin tool plug', '', ''),
     ('U6', '1', 'XL4015 5 A buck module, set 6.0 V', '', ''),

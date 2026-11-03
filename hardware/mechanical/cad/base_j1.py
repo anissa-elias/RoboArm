@@ -21,6 +21,8 @@ OUT = Path(__file__).resolve().parent.parent / 'stl'
 
 # ---- base box
 BASE = 200.0
+BASE_TOP = 180.0           # the shell tapers in towards the deck
+BASE_R = 32.0
 WALL = 4.0
 FLOOR = 4.0
 DECK_TOP = 92.0
@@ -38,8 +40,8 @@ Z_B2 = Z_RIB + RIB_H
 Z_B2_TOP = Z_B2 + B_W
 HUB_BORE = 54.0
 
-# ---- J1 belt: 20T on the gearbox shaft, 160T on the rotor, 400 mm 15 mm GT2 loop
-TEETH_ROTOR, TEETH_MOTOR, BELT_PITCH, BELT_LEN = 160, 20, 2.0, 400.0
+# ---- J1 belt: 20T on the gearbox shaft, 160T on the rotor, 360 mm 15 mm GT2 loop
+TEETH_ROTOR, TEETH_MOTOR, BELT_PITCH, BELT_LEN = 160, 20, 2.0, 360.0
 PD_ROTOR = TEETH_ROTOR * BELT_PITCH / math.pi
 PD_MOTOR = TEETH_MOTOR * BELT_PITCH / math.pi
 BELT_W = 15.0
@@ -79,6 +81,9 @@ MAG_D, MAG_H = 6.2, 2.5
 PAD = 24.0
 Z_PAD_TOP = Z_PLATE - 4.2
 
+MOUNT_X, MOUNT_Y, MOUNT_T = 250.0, 210.0, 8.0   # mounting plate, clamp ears on the +X and -X ends
+TABLE_BOLTS = ((-85, 0), (85, 0), (0, 85), (0, -85))
+
 STOP_R, STOP_ANGLE = 57.0, 225.0  # deck block opposite the motor
 
 # Motor plate, long side along the belt. It slides +/- TENSION to set belt tension.
@@ -106,7 +111,7 @@ def rounded_square(size, r, h, z=0.0):
 
 
 # No corner post behind the motor: it would hit the motor body.
-SCREW_XY = [(-86.0, -86.0), (-86.0, 86.0), (86.0, -86.0), (86.0, 40.0), (40.0, 86.0)]
+SCREW_XY = [(-68.0, -68.0), (-68.0, 68.0), (68.0, -68.0), (78.0, 15.0), (15.0, 78.0)]
 
 # Pi 5 and Mega sit with their USB ends at the rear wall.
 PI_HOLES = [(-8.5 - dx, 12 + 3.5 + dy) for dx in (0, 58) for dy in (0, 49)]
@@ -116,9 +121,17 @@ MEGA_HOLES = [(-90 + x, -62 + y) for x, y in
 CARRIER_HOLES = [(sx, sy) for sx in (14, 84) for sy in (-16, -60)]  # CHECK against the board you cut
 
 
+def tapered(bottom, top, r, h, z=0.0):
+    """Rounded square that narrows from bottom at z to top at z + h."""
+    a, c = bottom / 2 - r, top / 2 - r
+    low = [cyl(0.01, r, z, sx * a, sy * a) for sx in (-1, 1) for sy in (-1, 1)]
+    high = [cyl(0.01, r, z + h - 0.01, sx * c, sy * c) for sx in (-1, 1) for sy in (-1, 1)]
+    return Manifold.batch_hull(low + high)
+
+
 def base_shell():
-    outer = rounded_square(BASE, 10, DECK_BOT)
-    inner = rounded_square(BASE - 2 * WALL, 6, DECK_BOT, FLOOR)
+    outer = tapered(BASE, BASE_TOP, BASE_R, DECK_BOT)
+    inner = tapered(BASE - 2 * WALL, BASE_TOP - 2 * WALL, BASE_R - WALL, DECK_BOT, FLOOR)
     body = outer - inner
 
     posts = [cyl(DECK_BOT - FLOOR, 7, FLOOR, x, y) for x, y in SCREW_XY]
@@ -127,24 +140,43 @@ def base_shell():
 
     cuts = [cyl(16, 2.1, DECK_BOT - 16, x, y) for x, y in SCREW_XY]                   # M4 inserts
     cuts += [cyl(9, 1.2, FLOOR + 1, x, y) for x, y in PI_HOLES + MEGA_HOLES + CARRIER_HOLES]
-    cuts += [cyl(FLOOR + 2, 3.3, -1, x, y) for x, y in ((-85, 0), (85, 0), (0, 85), (0, -85))]  # M6 table bolts
-    cuts.append(box(-BASE / 2 - 1, -BASE / 2 + WALL + 1, 14, 68, 12, 34))             # Pi ports
-    cuts.append(box(-BASE / 2 - 1, -BASE / 2 + WALL + 1, -62, -18, 12, 30))           # Mega USB
+    cuts += [cyl(FLOOR + 2, 3.3, -1, x, y) for x, y in TABLE_BOLTS]  # M6 bolts into the mounting plate
+    cuts.append(box(-BASE / 2 - 1, -BASE / 2 + WALL + 6, 14, 68, 12, 34))             # Pi ports
+    cuts.append(box(-BASE / 2 - 1, -BASE / 2 + WALL + 6, -62, -18, 12, 30))           # Mega USB
     for y in (-8, 8):                                                                 # 24 V and E-stop cables
-        cuts.append(cyl(WALL + 2, 6, 0).rotate((0, 90, 0)).translate((-BASE / 2 - 1, y, 60)))
-    fan_axis = cyl(WALL + 2, 18.5, 0).rotate((90, 0, 0))
-    cuts.append(fan_axis.translate((50, -BASE / 2 + WALL + 1, 44)))                   # 40 mm fan
+        cuts.append(cyl(WALL + 10, 6, 0).rotate((0, 90, 0)).translate((-BASE / 2 - 1, y, 60)))
+    fan_axis = cyl(WALL + 8, 18.5, 0).rotate((90, 0, 0))
+    cuts.append(fan_axis.translate((50, -BASE / 2 + WALL + 7, 44)))                   # 40 mm fan
     for sx in (-16, 16):
         for sz in (-16, 16):
-            cuts.append(cyl(WALL + 2, 1.7, 0).rotate((90, 0, 0)).translate((50 + sx, -BASE / 2 + WALL + 1, 44 + sz)))
+            cuts.append(cyl(WALL + 8, 1.7, 0).rotate((90, 0, 0)).translate((50 + sx, -BASE / 2 + WALL + 7, 44 + sz)))
     for i in range(7):                                                                # exhaust slots
         y = -78 + i * 11
-        cuts.append(box(BASE / 2 - WALL - 1, BASE / 2 + 1, y, y + 5, 20, 76))
+        cuts.append(box(BASE / 2 - WALL - 9, BASE / 2 + 1, y, y + 5, 20, 72))
     return body - merge(cuts)
 
 
+def mount_plate():
+    """Flat plate under the base. The base bolts to it, and it is what gets clamped to the table.
+
+    Fits a 256 mm bed. M6 bolts drop through the base floor into nuts in the underside.
+    Sits below z = 0, so the table is at z = -MOUNT_T.
+    """
+    half_x, half_y = MOUNT_X / 2 - 12, MOUNT_Y / 2 - 12
+    plate = Manifold.batch_hull([cyl(MOUNT_T, 12, -MOUNT_T, sx * half_x, sy * half_y) for sx in (-1, 1) for sy in (-1, 1)])
+    lip = tapered(BASE + 6.6, BASE + 6.6, BASE_R + 3.3, 2.0) - tapered(BASE + 0.6, BASE + 0.6, BASE_R + 0.3, 3.0, -0.5)
+    body = plate + lip
+    for x, y in TABLE_BOLTS:
+        body -= cyl(MOUNT_T + 2, 3.3, -MOUNT_T - 1, x, y)
+        body -= Manifold.cylinder(5, 6.0, 6.0, 6).translate((x, y, -MOUNT_T - 0.01))   # M6 nut pocket
+    for sx in (-1, 1):                                                                 # bolt-down slots in the clamp ears
+        for sy in (-1, 1):
+            body -= Manifold.batch_hull([cyl(MOUNT_T + 2, 3.4, -MOUNT_T - 1, sx * (half_x - 3), sy * (half_y - 16 + e)) for e in (-8, 8)])
+    return body
+
+
 def deck():
-    plate = rounded_square(BASE, 10, DECK_T, DECK_BOT)
+    plate = rounded_square(BASE_TOP, BASE_R, DECK_T, DECK_BOT)
     collar = cyl(Z_COLLAR - DECK_TOP, 36, DECK_TOP)
     hub = cyl(Z_B2_TOP - 0.3 - DECK_TOP, (B_ID - FIT) / 2, DECK_TOP)
     block_x = STOP_R * math.cos(math.radians(STOP_ANGLE))
@@ -245,8 +277,8 @@ def bearing_cap():
 
 def belt_cover():
     mx, my = MOTOR_XY
-    outer = Manifold.batch_hull([cyl(28, 66, DECK_TOP), cyl(28, 25, DECK_TOP, mx, my)])
-    inner = Manifold.batch_hull([cyl(26, 63, DECK_TOP - 1), cyl(26, 23, DECK_TOP - 1, mx, my)])
+    outer = Manifold.batch_hull([cyl(28, 66, DECK_TOP, r2=59), cyl(28, 25, DECK_TOP, mx, my, r2=19)])
+    inner = Manifold.batch_hull([cyl(26, 63.5, DECK_TOP - 1, r2=56.5), cyl(26, 23.5, DECK_TOP - 1, mx, my, r2=17.5)])
     # Notch so the cover sits over the motor plate at any tension setting.
     notch = box(-PLATE_L / 2 - TENSION - 1, PLATE_L / 2 + TENSION + 1, -PLATE_W / 2 - 1, PLATE_W / 2 + 1,
                 DECK_TOP - 1, DECK_TOP + PLATE_FLANGE + 0.5).rotate((0, 0, 45)).translate((mx, my, 0))
@@ -269,6 +301,7 @@ def dummy_bearings():
 
 
 PRINTED = {
+    'base_mount_plate': mount_plate,
     'base_shell': base_shell,
     'base_deck': deck,
     'j1_motor_plate': motor_plate,
@@ -296,6 +329,7 @@ def checks(parts, motor, bearings):
         ('motor', 'rotor', motor, rot),
         ('motor', 'belt cover', motor, parts['j1_belt_cover']),
         ('deck', 'shell', parts['base_deck'], parts['base_shell']),
+        ('plate', 'shell', parts['base_mount_plate'], parts['base_shell']),
         ('motor', 'deck', motor, parts['base_deck']),
         ('plate', 'deck', parts['j1_motor_plate'], parts['base_deck']),
         ('plate', 'belt cover', parts['j1_motor_plate'], parts['j1_belt_cover']),

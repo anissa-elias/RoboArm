@@ -1,12 +1,12 @@
 # Mechanical design
 
-Status: chosen joint layout. The base, J1, J2 and gripper are modeled in [hardware/mechanical/cad](../hardware/mechanical/cad); J3-J5 are not yet. Full working is in [engineering-calculations.md](engineering-calculations.md), from [joint_sizing.py](../hardware/mechanical/joint_sizing.py). Masses in it are estimates, so re-run it as parts are weighed.
+Status: chosen joint layout. All five joints and the gripper are modeled in [hardware/mechanical/cad](../hardware/mechanical/cad); Full working is in [engineering-calculations.md](engineering-calculations.md), from [joint_sizing.py](../hardware/mechanical/joint_sizing.py). Masses in it are estimates, so re-run it as parts are weighed.
 
 ## Size target
 
 | | Niryo Ned2 | RoboArm target |
 |---|---|---|
-| Reach | 490 mm | 491 mm from the shoulder to the flange |
+| Reach | 490 mm | 504 mm from the shoulder to the tool flange |
 | Payload | 300 g at 20 mm | 300 g, sized at 110 mm past the flange to include the gripper |
 | Weight | 7 kg | About 5-6 kg (estimate) |
 | Footprint | 181.6 x 187.5 mm | 200 x 200 mm |
@@ -19,17 +19,17 @@ Ned2 figures are from Niryo's [spec sheet](https://niryo.com/wp-content/uploads/
 | Table to J2 axis | 166 mm |
 | J2 to J3 (upper arm) | 221 mm |
 | J3 to J4 (forearm) | 215 mm |
-| J4 to flange (wrist) | 55 mm |
+| J4 to tool flange (wrist) | 68.5 mm |
 
 ## Joints
 
 | Joint | Motion | Axis | Range | Motor | Reduction | Design torque | Available | Margin | Max speed |
 |---|---|---|---|---|---|---|---|---|---|
-| J1 | Base rotation | Z, vertical | 335° | 17HS19-1684S-PG5 | 5.18 x 8 = 41.4:1 | 0.9 N·m | 9.2 | 9.7 | 54°/s |
-| J2 | Shoulder | Y, sideways | 125° | 17HS19-1684S-PG14 | 13.73 x 5 = 68.7:1 | 5.7 N·m with spring | 15.2 | 2.6 (1.5 without) | 33°/s |
-| J3 | Elbow | Y, sideways | 160° | 17HS19-1684S-PG5 | 5.18 x 5 = 25.9:1 | 4.3 N·m | 5.7 | 1.3 | 87°/s |
-| J4 | Wrist | Y, sideways | 220° | 17HS08-1004S at 1.0 A | Belts 3 x 5 = 15:1 | 1.17 N·m | 1.22 | 1.05 | 150°/s |
-| J5 | Wrist twist | X, along the hand | 290° | 11HS20-0674S | Belt 3:1 | 0.09 N·m | 0.18 | 2.1 | 750°/s |
+| J1 | Base rotation | Z, vertical | 335° | 17HS19-1684S-PG5 | 5.18 x 8 = 41.4:1 | 0.9 N·m | 9.2 | 9.8 | 54°/s |
+| J2 | Shoulder | Y, sideways | 125° | 17HS19-1684S-PG14 | 13.73 x 5 = 68.7:1 | 5.8 N·m with spring | 15.2 | 2.6 (1.4 without) | 33°/s |
+| J3 | Elbow | Y, sideways | 130° (-80 to +50) | 17HS19-1684S-PG5 | 5.18 x 5 = 25.9:1 | 4.2 N·m | 5.7 | 1.4 | 87°/s |
+| J4 | Wrist | Y, sideways | 160° (-50 to +110) | 17HS08-1004S at 1.0 A | Belts 3.75 x 5 = 18.75:1 | 1.24 N·m | 1.53 | 1.24 | 120°/s |
+| J5 | Wrist twist | X, along the hand | 290° | 11HS12-0674S | Belt 4:1 | 0.09 N·m | 0.12 | 1.4 | 562°/s |
 | J6 | Gripper | Open and close | 0-50 mm | MG996R servo | Rack and pinion | - | - | - | - |
 
 Assumptions: usable motor torque is 60% of holding torque, drivetrain efficiency is 85%, and design torque is 1.5 x the static load. The speed limit comes from 8 microsteps and the firmware's 10 kHz step ceiling.
@@ -38,19 +38,20 @@ J1 and J2 are two stacked hinges rather than a ball joint: J1 aims the arm left 
 
 ### Layout along the arm
 
-- **J1:** the motor hangs from the deck inside the base, with a 20T pulley driving a 160T pulley printed on the turntable by a 400 mm, 15 mm belt. Two 6813 bearings on a fixed hub carry the turntable. The pulley has to surround the bearings, which is why it is 160T. See [the CAD](../hardware/mechanical/cad/base_j1.py).
+- **J1:** the motor hangs from the deck inside the base, with a 20T pulley driving a 160T pulley printed on the turntable by a 360 mm, 15 mm belt. Two 6813 bearings on a fixed hub carry the turntable. See [the CAD](../hardware/mechanical/cad/base_j1.py).
 - **J2:** the motor sits behind the shoulder on the J2 housing, and a 280 mm, 15 mm belt drives a 100T printed pulley bolted to the arm root. The pulley sits outside the fork, with a small notch in the turntable so it clears. Two 6806 bearings sit in the housing towers. An extension spring from the housing to the arm root carries about 60% of the arm's own weight, and also slows the drop when the E-stop cuts power.
-- **J3:** the motor sits at the shoulder end of the upper arm, with its gearbox driving the elbow by a 15 mm belt, on 6804 bearings. A gear-only elbow would put the motor at the elbow, adding about 0.6 kg for J2 to lift, and printed gear backlash of about 0.5° would move the tip about 4 mm.
-- **J4:** the motor rides at the rear of the forearm, with a 6 mm belt down to the wrist axle on 6802 bearings.
-- **J5:** the NEMA 11 rides in the wrist beside the twist axis and drives the flange by a short belt, on 6803 bearings. This avoids mechanical coupling with J4.
+- **J3:** the motor sits in a slim hump at the back of the upper arm, with its can outside the -Y wall, and its gearbox bolted to the internal rib. A 16T pulley drives an 80T printed pulley at the elbow by a 380 mm, 15 mm belt in the belt bay. 6804 bearings sit in the elbow cheeks. A gear-only elbow would put the motor at the elbow, adding about 0.6 kg for J2 to lift, and printed gear backlash of about 0.5° would move the tip about 4 mm.
+- **J4:** the motor sits in a small hump on top of the forearm. A 160 mm, 6 mm belt drives a printed 60T and 16T compound pulley on two 625 bearings, then a 300 mm, 6 mm belt drives an 80T printed pulley at the wrist. Two 6802 bearings sit in the wrist fork. J4 tips up to -50°, where the J5 motor reaches the forearm.
+- **J5:** a short 31.5 mm NEMA 11 sits on top of the wrist, bolted to the housing. A 180 mm, 6 mm belt drives a 64T printed pulley on a hollow spindle in two 6803 bearings. Tool wires pass down the spindle to the plug on the tool flange.
 - **J6:** the MG996R sits in the gripper.
 
 ### Encoders
 
 Each AS5600 needs a magnet on the joint's rotation axis.
 
-- **J2, J3, J4, J5:** the magnet goes on the axle end, with the module fixed facing it. On J2 it sits in the hub end, with the module on a bracket outside the housing.
-- **J1:** the module sits on a fixed post in the centre of the hub, with the magnet in the turntable above it. Cables wrap around the post through the 54 mm bore. A 1:1 belt to a side sensor would need a second 160T pulley, which does not fit.
+- **J2, J3, J4:** the magnet goes on the axle end, with the module fixed facing it.
+- **J5:** the magnet sits on a thin spoke across the hollow spindle, so wires can pass around it. On J2 it sits in the hub end, with the module on a bracket outside the housing.
+- **J1:** the motor hangs from the deck inside the base, with a 20T pulley driving a 160T pulley printed on the turntable by a 360 mm, 15 mm belt. Two 6813 bearings on a fixed hub carry the turntable. See [the CAD](../hardware/mechanical/cad/base_j1.py).
 
 The Mega's 10-bit ADC limits the absolute reading to 0.35°, or about 3 mm at the tip. Encoders handle start-up position and fault detection, while step counting gives the fine position.
 
@@ -101,27 +102,42 @@ The casing is the structure: printed PETG clamshells, stiffened with metal where
 
 | Section | Construction |
 |---|---|
-| Base | 200 x 200 mm printed box holding Pi, Mega, driver carrier, buck module and J1 motor. Rear panel for connectors, side vents, fan airflow across the drivers, E-stop on a tethered box |
+| Base | Tapered printed shell, 200 mm square at the table narrowing to 180 mm at the deck, with 32 mm corners, holding Pi, Mega, driver carrier, buck module and J1 motor. Rear panel for connectors, side vents, fan airflow across the drivers, E-stop on a tethered box |
 | Turntable | Thick printed housing on the J1 bearings, carrying the J2 motor and spring anchor |
-| Upper arm | Clamshell around two 2020 extrusions, about 56 mm wide at the shoulder |
-| Forearm | Clamshell around two 10 mm aluminium rods, tapering to a fork at J4 |
+| Upper arm | Slim printed tunnel, 60 mm wide, with a screw-on lid. An internal rib separates the wire tunnel from the belt bay, and snap clips on the lid and rear wall hold a wire bundle up to 15 mm. No metal spine; stiffness needs testing |
+| Forearm | Slim printed tunnel, 48 x 46 mm, with a lid underneath, a rib between wires and belts, wire clips, and a fork at J4. No metal spine; stiffness needs testing |
 | Wrist | Printed housing for the NEMA 11 |
 
 - Print load-bearing parts with 4+ walls and 40% infill, with layers running along the load path.
 - Use heat-set inserts wherever screws will be removed more than once.
 - Keep belts covered: they are pinch points.
 - The 24 V supply stays outside the base, so there is no mains voltage inside the arm.
-- The arm must be clamped or bolted to the table. The base is too light to resist tipping at full reach.
+- The base bolts down to a separate 250 x 210 x 8 mm mounting plate with four M6 bolts, and the plate is what gets clamped or bolted to the table. It has clamp ears at both ends and fits a 256 mm bed. The plate adds 8 mm to all table heights.
+- The arm must always be clamped. The base and plate are too light to resist tipping at full reach.
+
+## Joint colours
+
+Each joint has one colour in every drawing and in the 3D model. Printing these parts in matching filament is optional.
+
+| Joint | Colour |
+|---|---|
+| J1 base rotation | Blue |
+| J2 shoulder | Green |
+| J3 elbow | Orange |
+| J4 wrist | Purple |
+| J5 wrist twist | Pink |
+| J6 gripper | Yellow |
 
 ## Risks
 
 | Risk | Plan |
 |---|---|
-| J4 margin is only 1.05 at its full rated 1 A | Measure it early. Fallback: shorten the gripper, lighten the wrist, or use a higher belt ratio |
+| J4 and J3 are the tightest joints, at margins of 1.24 and 1.35 | Measure them early. Fallback: shorten the gripper or lighten the wrist |
+| J5 encoder fit | The AS5600 module nearly fills the wire window, leaving about 3 mm for the tool wires. Test-fit it. Fallback: a smaller encoder board |
 | PG14 gearbox limit not confirmed | The design puts 2.1 N·m on it with no spring. Check the datasheet before buying; 3 N·m is an unconfirmed figure from a related listing |
 | J2 belt load is about 180 N with the spring, 320 N without | Test a 15 mm belt and printed pulley under load first. If teeth skip, use a larger pulley or a stronger belt |
 | No brakes | Reduced by the J2 spring, but the arm can still fall. Support it during testing |
-| Elbow and shoulder stiffness | Measure deflection on a test section before printing the full arm |
+| Upper arm stiffness with no metal spine | First estimate is about 1 mm of bending at the elbow at full load, more with the lid off. Print the arm and load-test it. Fallback: bond in two 10 mm rods |
 
 ## Follow-up changes
 

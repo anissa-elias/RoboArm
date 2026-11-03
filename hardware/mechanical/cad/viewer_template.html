@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoboArm 3D model</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+html,body{margin:0;height:100%;background:#F3F5F7;color:#16202A;font-family:system-ui,sans-serif}
+#app{display:flex;flex-wrap:wrap;min-height:100%}
+#view{flex:999 1 500px;min-height:70vh;position:relative}
+#view canvas{display:block;width:100%;height:100%;position:absolute;inset:0}
+aside{flex:1 1 300px;box-sizing:border-box;padding:18px;display:flex;flex-direction:column;gap:10px;background:#fff;border-left:1px solid #C9D2DB;max-height:100vh;overflow:auto}
+h1{font-size:22px;line-height:28px;margin:0}
+p{margin:0;font-size:14px;line-height:20px;color:#4A5763}
+label{display:flex;align-items:center;gap:8px;font-size:14px;min-height:26px}
+h2{font-size:13px;margin:6px 0 0;color:#4A5763}
+input[type=range]{width:100%;height:28px}
+.sw{width:14px;height:14px;border-radius:3px;border:1px solid #7D8A96;flex:none}
+button{height:42px;font:inherit;font-weight:600;background:#fff;border:1px solid #7D8A96;border-radius:8px;cursor:pointer;flex:1}
+.row{display:flex;gap:8px}
+#msg{display:none;padding:24px}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="view"><p id="msg">The 3D model needs internet access to load its viewer library.</p></div>
+<aside>
+<h1>RoboArm</h1>
+<p>Drag to rotate, scroll to zoom. Each joint has its own colour.</p>
+<div><label for="j1">J1 base: <b id="a1">0</b>°</label><input id="j1" type="range" min="-167" max="167" value="0"></div>
+<div><label for="j2">J2 shoulder: <b id="a2">0</b>°</label><input id="j2" type="range" min="-35" max="90" value="15"></div>
+<div><label for="j3">J3 elbow: <b id="a3">0</b>°</label><input id="j3" type="range" min="-80" max="50" value="0"></div>
+<div><label for="j4">J4 wrist: <b id="a4">0</b>°</label><input id="j4" type="range" min="-50" max="110" value="0"></div>
+<div><label for="j5">J5 wrist twist: <b id="a5">0</b>°</label><input id="j5" type="range" min="-145" max="145" value="0"></div>
+<div class="row"><button id="lid">Open tunnel</button><button id="home">Home</button></div>
+<div id="list"></div>
+</aside>
+</div>
+<script>
+const DATA=/*DATA*/;
+function dec(s,T){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new T(u.buffer)}
+try{
+const view=document.getElementById('view');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+view.appendChild(renderer.domElement);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#F3F5F7');
+const cam=new THREE.PerspectiveCamera(32,1,1,6000);cam.up.set(0,0,1);cam.position.set(900,-1150,620);
+const ctl=new THREE.OrbitControls(cam,renderer.domElement);ctl.target.set(110,0,230);
+scene.add(new THREE.HemisphereLight(0xffffff,0x8a939c,0.8));
+const sun=new THREE.DirectionalLight(0xffffff,0.7);sun.position.set(300,-500,800);scene.add(sun);
+const fill=new THREE.DirectionalLight(0xffffff,0.25);fill.position.set(-400,400,200);scene.add(fill);
+const grid=new THREE.GridHelper(800,16,0xC9D2DB,0xDCE3EA);grid.rotation.x=Math.PI/2;grid.position.z=-8;scene.add(grid);
+const JOINTS=/*JOINTS*/,NAMES={Base:'Base',J1:'J1 base rotation',J2:'J2 shoulder',J3:'J3 elbow',J4:'J4 wrist',J5:'J5 wrist twist',J6:'J6 gripper',Arm:'Arm sections'};
+const list=document.getElementById('list'),byName={},meshes=[],groups={};
+for(const k of ['J1','J2','J3','J4','J5','J6','Arm','Base']){const h=document.createElement('h2'),s=document.createElement('span');s.className='sw';s.style.background=JOINTS[k]||'#C9D2DB';h.style.display='flex';h.style.gap='8px';h.style.alignItems='center';h.append(s,NAMES[k]);list.appendChild(h);groups[k]=list}
+for(const p of DATA){
+ const g=new THREE.BufferGeometry();
+ g.setAttribute('position',new THREE.BufferAttribute(dec(p.v,Float32Array),3));
+ g.setIndex(new THREE.BufferAttribute(dec(p.f,Uint32Array),1));
+ const flat=g.toNonIndexed();flat.computeVertexNormals();
+ const ghost=p.kind==='placeholder';
+ const m=new THREE.Mesh(flat,new THREE.MeshStandardMaterial({color:p.color,roughness:.55,metalness:.05,side:THREE.DoubleSide,transparent:ghost,opacity:ghost?.55:1}));
+ m.userData=p;m.matrixAutoUpdate=false;scene.add(m);meshes.push(m);byName[p.name]=m;const head=[...list.children].find(e=>e.tagName==='H2'&&e.textContent===NAMES[p.group]);
+ const l=document.createElement('label'),c=document.createElement('input'),s=document.createElement('span'),t=document.createElement('span');
+ c.type='checkbox';c.checked=true;p.box=c;c.onchange=()=>{m.visible=c.checked;draw()};s.className='sw';s.style.background=p.color;
+ t.textContent=p.name+(p.kind==='buy'?' (buy)':p.kind==='placeholder'?' (placeholder)':'');l.append(c,s,t);let at=head;while(at.nextElementSibling&&at.nextElementSibling.tagName==='LABEL')at=at.nextElementSibling;at.after(l);
+}
+const $=i=>document.getElementById(i),j1=$('j1'),j2=$('j2'),j3=$('j3'),j4=$('j4'),j5=$('j5');
+const about=(z,rad)=>new THREE.Matrix4().makeTranslation(0,0,z).multiply(new THREE.Matrix4().makeRotationY(rad)).multiply(new THREE.Matrix4().makeTranslation(0,0,-z));
+function pose(){const r=d=>d*Math.PI/180,J1=new THREE.Matrix4().makeRotationZ(r(+j1.value)),J2=about(166,r(+j2.value)),J3=about(387,r(+j3.value)),J4=new THREE.Matrix4().makeTranslation(215,0,387).multiply(new THREE.Matrix4().makeRotationY(r(+j4.value))).multiply(new THREE.Matrix4().makeTranslation(-215,0,-387)),J5=new THREE.Matrix4().makeTranslation(0,0,387).multiply(new THREE.Matrix4().makeRotationX(r(+j5.value))).multiply(new THREE.Matrix4().makeTranslation(0,0,-387));
+ $('a1').textContent=j1.value;$('a2').textContent=j2.value;$('a3').textContent=j3.value;$('a4').textContent=j4.value;$('a5').textContent=j5.value;
+ for(const m of meshes){const s=m.userData.stage,M=new THREE.Matrix4();if(s>=1)M.multiply(J1);if(s>=2)M.multiply(J2);if(s>=3)M.multiply(J3);if(s>=4)M.multiply(J4);if(s>=5)M.multiply(J5);m.matrix.copy(M);m.matrixWorldNeedsUpdate=true}draw()}
+function size(){const w=view.clientWidth,h=view.clientHeight;renderer.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();draw()}
+function draw(){renderer.render(scene,cam)}
+ctl.addEventListener('change',draw);[j1,j2,j3,j4,j5].forEach(i=>i.oninput=pose);addEventListener('resize',size);
+$('home').onclick=()=>{j1.value=0;j2.value=15;j3.value=0;j4.value=0;j5.value=0;pose()};
+$('lid').onclick=()=>{const v=!byName['Tunnel lid'].visible;for(const n of ['Tunnel lid','Forearm lid']){const m=byName[n];m.visible=v;m.userData.box.checked=v}$('lid').textContent=v?'Open tunnel':'Close tunnel';draw()};
+size();pose();
+}catch(e){document.getElementById('msg').style.display='block'}
+</script>
+</body>
+</html>

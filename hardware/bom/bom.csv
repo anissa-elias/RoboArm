@@ -19,11 +19,12 @@ Phase,Category,Reference,Part,Qty needed,Pack size,Packs to buy,USD per pack,Lin
 1,Wiring,-,"18 AWG silicone wire kit (24 V, motors)",1,1,1,15,15.00,yes,estimate,https://www.amazon.com/CBAZY-Stranded-Flexible-Silicone-Electric/dp/B073RDBW7L,
 1,Wiring,-,22 AWG silicone wire kit (signals),1,1,1,13,13.00,yes,estimate,https://www.amazon.com/CBAZY-Flexible-Silicone-Stranded-Electric/dp/B073RF4YY4,
 1,Bearings,J1,"6813-2RS thin bearing, 65x85x10 mm",2,1,2,10,20.00,,rough,,Sizes are proposed until CAD is frozen
-1,Drive,J1,"GT2 closed belt, 400 mm long, 15 mm wide (400-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 400 mm
+1,Drive,J1,"GT2 closed belt, 360 mm long, 15 mm wide (360-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 360 mm
 1,Drive,J1,"GT2 20-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Bore must match the gearbox output shaft
 1,Structure,-,"M3/M4/M5 screw, nut and washer assortment",1,1,1,30,30.00,,rough,,
 1,Structure,-,M3/M4 brass heat-set inserts,1,1,1,12,12.00,,rough,,
 1,Structure,Base,"C-clamps or table bolts, set of 2",1,2,1,12,12.00,,rough,,Arm must be fixed down; it can tip when extended
+1,Structure,Base,"M6 x 25 mm bolts and nuts, 4 each (base to mounting plate)",1,1,1,5,5.00,,rough,,New
 1,Printed,-,"PETG filament, 1 kg rolls",2,1,2,20,40.00,yes,rough,,Estimated 1.5-2 kg total
 1,Motors,M7,"MG996R servo, 4-pack (J6 gripper)",1,4,1,22.99,22.99,,checked,https://www.amazon.com/MG996R-Copper-Digital-Helicopter-Control/dp/B0DK1V5ZSM,
 1,Power,U6,"XL4015 5 A buck module, 3-pack (set to 6.0 V)",1,3,1,9.49,9.49,,checked,https://www.amazon.com/HiLetgo-1-25-36V-Converter-Adjustable-Step-down/dp/B00LOG4XC0,
@@ -32,7 +33,7 @@ Phase,Category,Reference,Part,Qty needed,Pack size,Packs to buy,USD per pack,Lin
 2,Motors,M2,"STEPPERONLINE 17HS19-1684S-PG14 NEMA 17, 13.73:1 planetary (J2)",1,1,1,35,35.00,,rough,,Confirm permissible torque is at least 3 N·m
 2,Motors,M3,"STEPPERONLINE 17HS19-1684S-PG5 NEMA 17, 5.18:1 planetary (J3)",1,1,1,32,32.00,,rough,,Same as J1
 2,Motors,M4,"STEPPERONLINE 17HS08-1004S short NEMA 17, 16 N·cm (J4)",1,1,1,11,11.00,,estimate,https://www.amazon.com/STEPPERONLINE-Bipolar-Stepper-22-6oz-Extruder/dp/B00PNEQ79Q,Title confirmed; model number not shown on the listing
-2,Motors,M5,"STEPPERONLINE 11HS20-0674S NEMA 11, 12 N·cm (J5 wrist twist)",1,1,1,15,15.00,,rough,,A 42 mm NEMA 17 will not fit the wrist
+2,Motors,M5,"STEPPERONLINE 11HS12-0674S NEMA 11, 6 N·cm, 31.5 mm long (J5 wrist twist)",1,1,1,15,15.00,,rough,,Short body so it fits the wrist
 2,Control,U1,Raspberry Pi 5 8 GB,1,1,1,95,95.00,yes,rough,,Skip if you already own one
 2,Control,PS2,Official Raspberry Pi 27 W USB-C supply,1,1,1,12,12.00,yes,rough,,
 2,Control,-,Raspberry Pi 5 Active Cooler,1,1,1,10,10.00,yes,rough,,New: needed in a closed base
@@ -45,14 +46,14 @@ Phase,Category,Reference,Part,Qty needed,Pack size,Packs to buy,USD per pack,Lin
 3,Bearings,J3,"6804 thin bearing, 20x32x7 mm",2,1,2,4,8.00,,rough,,
 3,Bearings,J4,"6802 bearing, 15x24x5 mm",2,1,2,3,6.00,,rough,,
 3,Drive,J2,"GT2 closed belt, 280 mm long, 15 mm wide (280-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 280 mm
-3,Drive,J3,"GT2 closed belt, 15 mm wide, length from CAD",1,1,1,10,10.00,,rough,,Do not use 6 mm belts here
-3,Drive,J4-J5,"GT2 closed belts, 6 mm wide, lengths from CAD",3,1,3,4,12.00,,rough,,Includes the long forearm run
+3,Drive,J3,"GT2 closed belt, 380 mm long, 15 mm wide (380-2GT-15)",1,1,1,10,10.00,,rough,,Exact length matters: the model is built for 380 mm
+3,Drive,J4,"GT2 closed belt, 160 mm long, 6 mm wide",1,1,1,4,4.00,,rough,,Exact length matters
+3,Drive,J4,"GT2 closed belt, 300 mm long, 6 mm wide",1,1,1,4,4.00,,rough,,Exact length matters
+3,Drive,J5,"GT2 closed belt, 180 mm long, 6 mm wide",1,1,1,4,4.00,,rough,,Exact length matters
 3,Drive,J2,"GT2 20-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Large pulley is printed
-3,Drive,J3,"GT2 20-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Large pulley is printed
+3,Drive,J3,"GT2 16-tooth pulley, 8 mm bore, for 15 mm belt",1,1,1,8,8.00,,rough,,Large 80T pulley is printed
 3,Drive,J3,GT2 idler for 15 mm belt,1,1,1,2,2.00,,rough,,Tensions the long belt
-3,Drive,J4,"GT2 small pulleys, 5 mm bore, 20T and 16T, for 6 mm belt",2,1,2,3.5,7.00,,rough,,Two belt stages; large pulleys are printed
-3,Drive,J4,GT2 idler for 6 mm belt,1,1,1,2,2.00,,rough,,Tensions the long belt
+3,Drive,J4,"GT2 16-tooth pulley, 5 mm bore, for 6 mm belt",1,1,1,3.5,3.50,,rough,,Motor pulley
+3,Drive,J4,"625 bearing, 5 x 16 x 5 mm (compound pulley), with M5 bolt",2,2,1,3.50,3.50,,rough,,The 60T and 16T compound pulley is printed
 3,Drive,J5,"GT2 16-tooth pulley, 5 mm bore, for 6 mm belt",1,1,1,3,3.00,,rough,,Large pulley is printed
 3,Drive,J2,"Extension springs for counterbalance, assortment",1,1,1,12,12.00,,rough,,Choose rate after weighing the real arm
-3,Structure,Upper arm,"2020 aluminium extrusion, 180 mm",2,2,1,12,12.00,,rough,,
-3,Structure,Forearm,"10 mm aluminium rod, 200 mm",2,2,1,10,10.00,,rough,,
