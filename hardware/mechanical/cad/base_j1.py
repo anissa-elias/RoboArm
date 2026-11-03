@@ -111,14 +111,14 @@ def rounded_square(size, r, h, z=0.0):
 
 
 # No corner post behind the motor: it would hit the motor body.
-SCREW_XY = [(-68.0, -68.0), (-68.0, 68.0), (68.0, -68.0), (78.0, 15.0), (15.0, 78.0)]
+SCREW_XY = [(-68.0, -68.0), (-68.0, 68.0), (-14.0, -85.0), (78.0, 15.0), (15.0, 78.0)]
 
 # Pi 5 and Mega sit with their USB ends at the rear wall.
 PI_HOLES = [(-8.5 - dx, 12 + 3.5 + dy) for dx in (0, 58) for dy in (0, 49)]
 # CHECK the Mega holes against your board; clones can differ.
 MEGA_HOLES = [(-90 + x, -62 + y) for x, y in
               ((13.97, 2.54), (15.24, 50.8), (66.04, 7.62), (66.04, 35.56), (90.17, 50.8), (96.52, 2.54))]
-CARRIER_HOLES = [(sx, sy) for sx in (14, 84) for sy in (-16, -60)]  # CHECK against the board you cut
+CARRIER_HOLES = [(sx, sy) for sx in (17.0, 81.0) for sy in (2.0, -82.0)]  # 7 x 9 cm perfboard, CHECK the holes on your board
 
 
 def tapered(bottom, top, r, h, z=0.0):

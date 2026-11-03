@@ -4,10 +4,10 @@ Complete build list for the arm in [docs/mechanical-design.md](../../docs/mechan
 
 | Phase | Cost |
 |---|---|
-| Phase 1: base, J1, gripper and electronics test | $330 |
+| Phase 1: base, J1, gripper and electronics test | $332 |
 | Phase 2: the rest of the electronics and motors | $103 |
 | Phase 3: mechanical for the arm | $100 |
-| **Total, before tax and shipping** | **about $533** |
+| **Total, before tax and shipping** | **about $535** |
 
 Totals leave out parts already owned (marked Owned, about $321). Confirm the Raspberry Pi is a Pi 5 and that the 24 V supply can deliver 5 A.
 
@@ -39,7 +39,8 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | C7,C20-25 | [Electrolytics: 1000 uF 16 V x1, 100 uF 35 V x6](https://www.amazon.com/OQATNXUR-Electrolytic-Capacitor-Assortment-1000uf/dp/B0DDCB76H9) | 7 | 1 | $12.00 | estimate |
 | C1-6,C8 | [Ceramic capacitor kit including 100 nF](https://www.amazon.com/BOJACK-Ceramic-Capacitor-Assortment-Capacitors/dp/B07P8N8BW9) | 7 | 1 | $10.00 | estimate |
 | R1-6,R13,R21-26,R31-32 | [Metal film resistor kit: 1k x9, 10k x6](https://www.amazon.com/Elegoo-Values-Resistor-Assortment-Compliant/dp/B072BL2VX1) | 15 | 1 x 525-pack | $10.00 | estimate |
-| - | [ElectroCookie prototype boards, 3-pack](https://www.amazon.com/Prototype-Solderable-Breadboard-Electronics-Gold-Plated/dp/B082KY5Y5Z) | 1 | 1 x 3-pack | $12.00 | estimate |
+| - | Double-sided perfboard, 7 x 9 cm, 24 x 30 holes, pack | 1 | 1 | $8.00 | rough |
+| - | 2-pin screw terminals, 5.08 mm pitch, pack | 2 | 1 | $6.00 | rough |
 | - | [2.54 mm female headers (driver sockets)](https://www.amazon.com/Glarks-Straight-Connector-Assortment-Prototype/dp/B076GZXW3Z) | 1 | 1 | $8.00 | estimate |
 | FAN1 | [40 mm 5 V fan, 2-pack](https://www.amazon.com/WINSINN-Bearings-Brushless-Cooling-40mm10mm/dp/B08R9JJDYP) | 1 | 1 x 2-pack | $9.00 | estimate |
 | - | [USB-A to USB-B cable](https://www.amazon.com/amazonbasics-usb-2-0-cable-male/dp/b00nh11kik) | 1 | Owned | $5.00 | estimate |
@@ -57,7 +58,7 @@ Totals leave out parts already owned (marked Owned, about $321). Confirm the Ras
 | U6 | [XL4015 5 A buck module, 3-pack (set to 6.0 V)](https://www.amazon.com/HiLetgo-1-25-36V-Converter-Adjustable-Step-down/dp/B00LOG4XC0) | 1 | 1 x 3-pack | $9.49 | checked |
 | Gripper | TPU filament or rubber pads for jaws | 1 | 1 | $10.00 | rough |
 | Gripper | 4 mm steel rod, 110 mm (gripper guides) | 2 | 1 x 2-pack | $6.00 | rough |
-| | **Subtotal to buy** | | | **$330.47** | |
+| | **Subtotal to buy** | | | **$332.47** | |
 
 ## Phase 2: the rest of the electronics and motors (buy after J1 works)
 
